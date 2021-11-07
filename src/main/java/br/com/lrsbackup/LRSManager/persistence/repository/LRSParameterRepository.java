@@ -8,4 +8,6 @@ public interface LRSParameterRepository extends JpaRepository<LRSParameter, Long
 
 	LRSParameter findByname(String pName);
 
+	LRSParameter findByid(Long id);
+
 }

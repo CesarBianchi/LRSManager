@@ -4,24 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.lrsbackup.LRSManager.persistence.model.LRSParameter;
+import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
+import br.com.lrsbackup.LRSManager.util.LRSResponseMessage;
 
 public class LRSParameterServiceModel {
 
-	public String appName = new String();
-	public String serviceName = new String();
-	public String resourceName = new String();
-	public String responseTime = new String();
-	public List<LRSParameter> params = new ArrayList<>();
+	public LRSResponseInfo responseInfo = new LRSResponseInfo();
+	public List<LRSParameter> parameters = new ArrayList<>();
+	public List<LRSResponseMessage> messages = new ArrayList<>();
 	
-	public LRSParameterServiceModel(String resource, List<LRSParameter> pParams ) {
+	
+	public LRSParameterServiceModel() {
 		super();
-		this.appName = "LRSBackup";
-		this.serviceName = "Manager Service";
-		this.resourceName = resource;
-		this.responseTime = java.time.LocalTime.now().toString().substring(0,12);
-		this.params = pParams;
 	}
 	
-	
+	public LRSParameterServiceModel(LRSResponseInfo pInfo, List<LRSParameter> pParams, String msg) {	
+		LRSResponseMessage message = new LRSResponseMessage();
+		
+		this.responseInfo = pInfo;
+		this.parameters = pParams;
+		message.setMessage(msg);
+		this.messages.add(message);
+	}
 	
 }

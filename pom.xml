@@ -17,7 +17,7 @@
 	<description>LRSBackup Manager module</description>
 	
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 	</properties>
 	
 	<dependencies>
@@ -85,17 +85,27 @@
 	</dependencies>
 
 	<build>
+		<finalName>LRSManager</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+			        <execution>
+			            <configuration>
+			                <mainClass>br.com.lrsbackup.LRSManager.LRSManagerApplication</mainClass>
+			            </configuration>
+			        </execution>
+			    </executions>
 			</plugin>
 			
 			<plugin>
            		<groupId>org.apache.maven.plugins</groupId>
             	<artifactId>maven-compiler-plugin</artifactId>
+            	<version>3.1</version>
             	<configuration>
-                	<release>11</release>
+                	<source>1.8</source>
+                	<target>1.8</target>
             	</configuration>
         	</plugin>
         	
@@ -104,6 +114,36 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.0</version>
             </plugin>
+        	
+        	<plugin>
+				<!-- Build an executable JAR -->
+			  	<groupId>org.Apache.maven.plugins</groupId>
+			  	<artifactId>maven-jar-plugin</artifactId>
+			 	<version>3.1.0</version>
+			  	<configuration>
+			   		<archive>
+			      			<manifest>
+			        		<addClasspath>true</addClasspath>
+			        		<classpathPrefix>lib/</classpathPrefix>
+			        		<mainClass>br.com.lrsbackup.LRSManager.LRSManagerApplication</mainClass>
+			      		</manifest>
+			    	</archive>
+			  	</configuration>
+			</plugin>
+        	
+        	<plugin>
+		      <artifactId>maven-assembly-plugin</artifactId>
+		      <configuration>
+		        <archive>
+		          <manifest>
+		            <mainClass>br.com.lrsbackup.LRSManager.LRSManagerApplication</mainClass>
+		          </manifest>
+		        </archive>
+		        <descriptorRefs>
+		          <descriptorRef>jar-with-dependencies</descriptorRef>
+		        </descriptorRefs>
+		      </configuration>
+		    </plugin>
         	
 		</plugins>
 	</build>

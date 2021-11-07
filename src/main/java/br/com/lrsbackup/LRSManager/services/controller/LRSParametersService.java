@@ -158,6 +158,53 @@ public class LRSParametersService {
 		
     }
 	
+	public ResponseEntity updateValue(@RequestBody LRSParameterForm parameter) {
+		LRSParameterServiceModel response;
+		
+		this.responseInfo.setRequestTime(java.time.LocalTime.now().toString().substring(0,12));
+		this.responseInfo.setResourceName("/parameters/delete");
+
+		//Search by Parameter
+		LRSParameter param = parameterRepository.findByname(parameter.getName());
+		
+		//Parameter Found ?
+		if (param != null) {
+		
+			param.setValue(parameter.getValue());
+			parameterRepository.saveAndFlush(param);
+		
+			//Create a Response
+			List<LRSParameter> parameters = new ArrayList<>();
+			parameters.add(param);
+			String cMsg = "Parameter ".concat(param.getName()).concat(" was successfully updated");
+			response = new LRSParameterServiceModel(responseInfo,parameters,cMsg);
+		
+			this.responseInfo.setResponseTime(java.time.LocalTime.now().toString().substring(0,12));
+			new LRSConsoleOut("Resource /parameters/delete invoked");
+			new LRSConsoleOut(response);
+			
+			finalHttpStatus = HttpStatus.OK;
+			this.responseInfo.setHttpStatus(finalHttpStatus);
+			
+		} else {
+			
+			//Create a Response
+			List<LRSParameter> parameters = new ArrayList<>();
+			parameters.add(param);
+			String cMsg = "Parameter ".concat(parameter.getName()).concat(" was not found. Transaction was not commited");
+			response = new LRSParameterServiceModel(responseInfo,parameters,cMsg);
+		
+			this.responseInfo.setResponseTime(java.time.LocalTime.now().toString().substring(0,12));
+			new LRSConsoleOut("Resource /parameters/delete invoked");
+			new LRSConsoleOut(response);
+			
+			finalHttpStatus = HttpStatus.CONFLICT;
+			this.responseInfo.setHttpStatus(finalHttpStatus);
+		}
+		return ResponseEntity.status(finalHttpStatus).body(response);	
+		
+    }
+	
 	@RequestMapping(value ="/parameters/delete", method = RequestMethod.DELETE)
     public ResponseEntity delete(String name) {
 		LRSParameterServiceModel response;
@@ -206,52 +253,5 @@ public class LRSParametersService {
     }
 	
 	
-	@RequestMapping(value ="/parameters/updatevalue", method = RequestMethod.POST)
-    public ResponseEntity updateValue(@RequestBody LRSParameterForm parameter) {
-		LRSParameterServiceModel response;
-		
-		this.responseInfo.setRequestTime(java.time.LocalTime.now().toString().substring(0,12));
-		this.responseInfo.setResourceName("/parameters/delete");
-
-		//Search by Parameter
-		LRSParameter param = parameterRepository.findByname(parameter.getName());
-		
-		//Parameter Found ?
-		if (param != null) {
-		
-			param.setValue(parameter.getValue());
-			parameterRepository.saveAndFlush(param);
-		
-			//Create a Response
-			List<LRSParameter> parameters = new ArrayList<>();
-			parameters.add(param);
-			String cMsg = "Parameter ".concat(param.getName()).concat(" was successfully updated");
-			response = new LRSParameterServiceModel(responseInfo,parameters,cMsg);
-		
-			this.responseInfo.setResponseTime(java.time.LocalTime.now().toString().substring(0,12));
-			new LRSConsoleOut("Resource /parameters/delete invoked");
-			new LRSConsoleOut(response);
-			
-			finalHttpStatus = HttpStatus.OK;
-			this.responseInfo.setHttpStatus(finalHttpStatus);
-			
-		} else {
-			
-			//Create a Response
-			List<LRSParameter> parameters = new ArrayList<>();
-			parameters.add(param);
-			String cMsg = "Parameter ".concat(parameter.getName()).concat(" was not found. Transaction was not commited");
-			response = new LRSParameterServiceModel(responseInfo,parameters,cMsg);
-		
-			this.responseInfo.setResponseTime(java.time.LocalTime.now().toString().substring(0,12));
-			new LRSConsoleOut("Resource /parameters/delete invoked");
-			new LRSConsoleOut(response);
-			
-			finalHttpStatus = HttpStatus.CONFLICT;
-			this.responseInfo.setHttpStatus(finalHttpStatus);
-		}
-		return ResponseEntity.status(finalHttpStatus).body(response);	
-		
-    }
 	
 }

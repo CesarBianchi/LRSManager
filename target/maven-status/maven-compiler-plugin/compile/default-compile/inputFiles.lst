@@ -1,0 +1,11 @@
+/Users/cesarbianchi/Downloads/LRSManager/src/main/java/br/com/lrsbackup/LRSManager/util/LRSApplicationVersion.java
+/Users/cesarbianchi/Downloads/LRSManager/src/main/java/br/com/lrsbackup/LRSManager/util/LRSResponseInfo.java
+/Users/cesarbianchi/Downloads/LRSManager/src/main/java/br/com/lrsbackup/LRSManager/util/LRSConsoleOut.java
+/Users/cesarbianchi/Downloads/LRSManager/src/main/java/br/com/lrsbackup/LRSManager/services/controller/LRSParametersService.java
+/Users/cesarbianchi/Downloads/LRSManager/src/main/java/br/com/lrsbackup/LRSManager/persistence/model/LRSQueueMessage.java
+/Users/cesarbianchi/Downloads/LRSManager/src/main/java/br/com/lrsbackup/LRSManager/persistence/controller/form/LRSParameterForm.java
+/Users/cesarbianchi/Downloads/LRSManager/src/main/java/br/com/lrsbackup/LRSManager/util/LRSResponseMessage.java
+/Users/cesarbianchi/Downloads/LRSManager/src/main/java/br/com/lrsbackup/LRSManager/LRSManagerApplication.java
+/Users/cesarbianchi/Downloads/LRSManager/src/main/java/br/com/lrsbackup/LRSManager/persistence/repository/LRSParameterRepository.java
+/Users/cesarbianchi/Downloads/LRSManager/src/main/java/br/com/lrsbackup/LRSManager/persistence/model/LRSParameter.java
+/Users/cesarbianchi/Downloads/LRSManager/src/main/java/br/com/lrsbackup/LRSManager/services/model/LRSParameterServiceModel.java

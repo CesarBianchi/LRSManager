@@ -1,0 +1,7 @@
+-------------------------------------------------------------------------------
+Test set: br.com.lrsbackup.LRSPersistence.LrsPersistenceApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.344 s <<< FAILURE! - in br.com.lrsbackup.LRSPersistence.LrsPersistenceApplicationTests
+br.com.lrsbackup.LRSPersistence.LrsPersistenceApplicationTests  Time elapsed: 0.342 s  <<< ERROR!
+java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you need to use @ContextConfiguration or @SpringBootTest(classes=...) with your test
+

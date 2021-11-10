@@ -22,17 +22,6 @@ public class LRSQueueMessage {
 	private int percentUploaded;
 	private int tentatives;
 	
-	public static final String AWS = new String("AWS");
-	public static final String AZURE = new String("AZURE");
-	public static final String ORACLE_CLOUD = new String("ORACLE_CLOUD");
-	
-	
-	public static final int READY = 1;
-	public static final int UPLOADING = 2;
-	public static final int UPLOADED = 3;
-	public static final int ERROR = 4;
-	
-	
 	public LRSQueueMessage() {
 		super();
 

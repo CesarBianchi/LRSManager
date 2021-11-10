@@ -9,6 +9,7 @@ public class LRSResponseInfo {
 	public String serviceName = new String();
 	public String serviceVersion = new String();
 	public String resourceName = new String();
+	public String clientIPAddress = new String();
 	public String requestTime = new String();	
 	public String responseTime = new String();
 	public HttpStatus httpStatus;
@@ -73,8 +74,13 @@ public class LRSResponseInfo {
 	public void setHttpStatus(HttpStatus finalHttpStatus) {
 		this.httpStatus = finalHttpStatus;
 	}
-	
-	
-	
+
+	public String getClientIPAddr() {
+		return clientIPAddress;
+	}
+
+	public void setClientIPAddr(String clientIPAddress) {
+		this.clientIPAddress = clientIPAddress;
+	}
 	
 }

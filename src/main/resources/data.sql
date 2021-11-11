@@ -1,6 +1,6 @@
 INSERT INTO lrsparameter (id,name,value) VALUES (1,'CloudAWSEnabled','True');
 INSERT INTO lrsparameter (id,name,value) VALUES (2,'CloudAzureEnabled','False');
-INSERT INTO lrsparameter (id,name,value) VALUES (3,'CloudOracleEnabled','Fa;se');
+INSERT INTO lrsparameter (id,name,value) VALUES (3,'CloudOracleEnabled','False');
 INSERT INTO lrsparameter (id,name,value) VALUES (4,'UserCloudAWS','TBD');
 INSERT INTO lrsparameter (id,name,value) VALUES (5,'UserCloudAzure','TBD');
 INSERT INTO lrsparameter (id,name,value) VALUES (6,'UserCloudOracle','TBD');

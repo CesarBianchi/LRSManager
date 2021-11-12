@@ -2,18 +2,17 @@ package br.com.lrsbackup.LRSManager.services.model;
 
 import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
 
-public class LRSCloudEnabledServiceModel {
+public class LRSConfigServiceModel {
 	private LRSResponseInfo responseInfo = new LRSResponseInfo();
 	private String enabled = new String();
 	
 	
-	
-	public LRSCloudEnabledServiceModel() {
+	public LRSConfigServiceModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public LRSCloudEnabledServiceModel(LRSResponseInfo responseInfo, String enabled) {
+	public LRSConfigServiceModel(LRSResponseInfo responseInfo, String enabled) {
 		this.enabled = enabled;
 		this.responseInfo = responseInfo;
 	}

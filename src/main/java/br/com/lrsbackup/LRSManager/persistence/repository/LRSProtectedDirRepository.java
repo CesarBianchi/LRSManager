@@ -5,4 +5,6 @@ import br.com.lrsbackup.LRSManager.persistence.model.LRSProtectedDir;
 
 public interface LRSProtectedDirRepository extends JpaRepository<LRSProtectedDir, Long> {
 
+	LRSProtectedDir findBydirname(String originalPath);
+
 }

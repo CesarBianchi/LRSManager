@@ -45,7 +45,7 @@ public class LRSServiceConfigs {
 		
 		setRespInfoInitialData(request);
 		
-		LRSParameter parameter = this.getParameterCloudProviderEnabled(LRSOptionsCloudProvider.AWS);
+		LRSParameter parameter = this.getParameterCloudProviderEnabledName(LRSOptionsCloudProvider.AWS);
 		
 		finalHttpStatus = HttpStatus.OK;
 		setRespInfoFootData(finalHttpStatus);
@@ -68,7 +68,7 @@ public class LRSServiceConfigs {
 		
 		setRespInfoInitialData(request);
 		
-		LRSParameter parameter = this.getParameterCloudProviderEnabled(LRSOptionsCloudProvider.AZURE);
+		LRSParameter parameter = this.getParameterCloudProviderEnabledName(LRSOptionsCloudProvider.AZURE);
 		finalHttpStatus = HttpStatus.OK;
 		setRespInfoFootData(finalHttpStatus);
 		
@@ -89,7 +89,7 @@ public class LRSServiceConfigs {
 		
 		setRespInfoInitialData(request);
 		
-		LRSParameter parameter = this.getParameterCloudProviderEnabled(LRSOptionsCloudProvider.ORACLE);
+		LRSParameter parameter = this.getParameterCloudProviderEnabledName(LRSOptionsCloudProvider.ORACLE);
 		finalHttpStatus = HttpStatus.OK;
 		setRespInfoFootData(finalHttpStatus);
 		
@@ -150,7 +150,7 @@ public class LRSServiceConfigs {
 		return ResponseEntity.status(finalHttpStatus).body(response);	
     }
 	
-	private LRSParameter getParameterCloudProviderEnabled(LRSOptionsCloudProvider cloudProvider) {
+	public LRSParameter getParameterCloudProviderEnabledName(LRSOptionsCloudProvider cloudProvider) {
 		String cCloudProviderParamName = new String();
 		
 		if (cloudProvider == LRSOptionsCloudProvider.AWS) {

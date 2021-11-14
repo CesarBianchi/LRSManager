@@ -50,6 +50,16 @@ public class LRSParameter {
 		this.value = value;
 	}
 
+	public boolean convertToBoolean() {
+		boolean lRet = false;
+		
+		if (this.value.trim().toUpperCase().equals("TRUE")) {
+			lRet = true;
+		}
+		
+		return lRet;
+		
+	}
 
 	
 }

@@ -1,50 +1,49 @@
 package br.com.lrsbackup.LRSManager.persistence.model;
 
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-public class LRSQueueMessage {
+public class LRSQueueFile {
 
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	private String originalFileName = new String();
+	private String originalfullname = new String();
 	private String destinationFileName = new String();
 	private String cloudProvider = new String();
-	private int status;
+	private String status;
 	private int percentUploaded;
 	private int tentatives;
+	private LocalDateTime insertedDate = LocalDateTime.now();
+	private LocalDateTime processedDate = LocalDateTime.now();
 	
-	public LRSQueueMessage() {
+	public LRSQueueFile() {
 		super();
-
 	}
-
 
 	public long getId() {
 		return id;
 	}
 
-
 	public void setId(long id) {
 		this.id = id;
 	}
 
-
-	public String getOriginalFileName() {
-		return originalFileName;
+	public String getOriginalfullname() {
+		return originalfullname;
 	}
 
 
-	public void setOriginalFileName(String originalFileName) {
-		this.originalFileName = originalFileName;
+	public void setOriginalfullname(String originalfullname) {
+		this.originalfullname = originalfullname;
 	}
 
 
@@ -68,13 +67,13 @@ public class LRSQueueMessage {
 	}
 
 
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setStatus(String pStatus) {
+		this.status = pStatus;
 	}
 
 
@@ -96,5 +95,23 @@ public class LRSQueueMessage {
 	public void setTentatives(int tentatives) {
 		this.tentatives = tentatives;
 	}
+
+	public LocalDateTime getInsertedDate() {
+		return insertedDate;
+	}
+
+	public void setInsertedDate(LocalDateTime insertedDate) {
+		this.insertedDate = insertedDate;
+	}
+
+	public LocalDateTime getProcessedDate() {
+		return processedDate;
+	}
+
+	public void setProcessedDate(LocalDateTime processedDate) {
+		this.processedDate = processedDate;
+	}
+	
+	
 	
 }

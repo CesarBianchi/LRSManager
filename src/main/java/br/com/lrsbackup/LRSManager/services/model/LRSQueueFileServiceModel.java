@@ -6,11 +6,12 @@ import java.util.List;
 import br.com.lrsbackup.LRSManager.persistence.model.LRSQueueFile;
 import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
 import br.com.lrsbackup.LRSManager.util.LRSResponseMessage;
+import br.com.lrsbackup.LRSManager.util.LRSResponseMessages;
 
 public class LRSQueueFileServiceModel {
 	public LRSResponseInfo responseInfo = new LRSResponseInfo();
-	public List<LRSQueueFile> files = new ArrayList<>();
-	public List<LRSResponseMessage> messages = new ArrayList<>();
+	public List<LRSQueueFile> directories = new ArrayList<>();
+	public LRSResponseMessages messages = new LRSResponseMessages();
 	
 	public LRSQueueFileServiceModel() {
 		super();
@@ -18,12 +19,9 @@ public class LRSQueueFileServiceModel {
 	}
 	
 	
-	public LRSQueueFileServiceModel(LRSResponseInfo pInfo, List<LRSQueueFile> pFiles, String msg) {	
-		LRSResponseMessage message = new LRSResponseMessage();
-		
+	public LRSQueueFileServiceModel(LRSResponseInfo pInfo, List<LRSQueueFile> pFiles, LRSResponseMessages pMessages) {	
 		this.responseInfo = pInfo;
-		this.files = pFiles;
-		message.setMessage(msg);
-		this.messages.add(message);
+		this.directories = pFiles;
+		this.messages = pMessages;
 	}
 }

@@ -27,9 +27,10 @@ import br.com.lrsbackup.LRSManager.util.LRSApplicationVersion;
 import br.com.lrsbackup.LRSManager.util.LRSRequestConsoleOut;
 import br.com.lrsbackup.LRSManager.util.LRSRequestIDGenerator;
 import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
+import br.com.lrsbackup.LRSManager.util.LRSResponseMessages;
 
 
-@RestController
+@RestController	
 public class LRSServiceQueueFile {
 
 	@Autowired
@@ -61,55 +62,67 @@ public class LRSServiceQueueFile {
 		this.responseInfo.setResponseTime(java.time.LocalTime.now().toString().substring(0,12));
 	}
 	
-	@RequestMapping(value = "/queue/get/byid", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/queue/v1/getbyid", method = RequestMethod.GET)
 	public ResponseEntity getbyid(Long id, HttpServletRequest request) {
-		
-		String cMsg = new String("");
+		LRSResponseMessages messages = new LRSResponseMessages();
 		List<LRSQueueFile> aFiles = new ArrayList<>();
 		
 		
 		setRespInfoInitialData(request);
 		if (id == null)  {
 			finalHttpStatus = HttpStatus.BAD_REQUEST;
-			cMsg = "The parameter 'id' is mandatory! Please, check it and try again!";
+			messages.addMessage("The parameter 'id' is mandatory! Please, check it and try again!");
 		} else {
 			aFiles = queueFileRepository.findByid(id);	
-			finalHttpStatus = HttpStatus.OK;
+			
+			if (aFiles.size() > 0) {
+				finalHttpStatus = HttpStatus.OK;
+				messages.addMessage("Transaction Ok!");
+			} else {
+				finalHttpStatus = HttpStatus.BAD_REQUEST;
+				messages.addMessage("ID Not Found");
+			}
 		}
 		
 		setRespInfoFootData(finalHttpStatus);
-		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,cMsg);
+		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,messages);
 		requestConsoleOut.println(request,response);
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
 	}
 	
-	@RequestMapping(value = "/queue/get/byfullfilename", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/queue/v1/getbyfullfilename", method = RequestMethod.GET)
 	public ResponseEntity getbyfilename(String fullfilename, HttpServletRequest request) {
-		
-		String cMsg = new String("");
+		LRSResponseMessages messages = new LRSResponseMessages();	
 		List<LRSQueueFile> aFiles = new ArrayList<>();
 		
 		
 		setRespInfoInitialData(request);
 		if (fullfilename.isEmpty())  {
 			finalHttpStatus = HttpStatus.BAD_REQUEST;
-			cMsg = "The parameter 'fullfilename' is mandatory! Please, check it and try again!";
+			messages.addMessage("The parameter 'fullfilename' is mandatory! Please, check it and try again!");
 		} else {
 			aFiles = queueFileRepository.findByoriginalfullname(fullfilename);	
-			finalHttpStatus = HttpStatus.OK;
+			if (aFiles.size() > 0) {
+				finalHttpStatus = HttpStatus.OK;
+				messages.addMessage("Transaction Ok!");
+			} else {
+				finalHttpStatus = HttpStatus.BAD_REQUEST;
+				messages.addMessage("Directory Not Found");
+			}
 		}
 		
 		setRespInfoFootData(finalHttpStatus);
-		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,cMsg);
+		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,messages);
 		requestConsoleOut.println(request,response);
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
 	}
 	
-	@RequestMapping(value = "/queue/get/readytoup", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/queue/v1/getreadytoup", method = RequestMethod.GET)
 	public ResponseEntity getready(HttpServletRequest request) {
-		String cMsg = new String("These resource can be slow and return many items! Please, use 'queue/get/byparams' resource");
+		LRSResponseMessages messages = new LRSResponseMessages();			
+		messages.addMessage("WARNING!!! This resource can be slow and return many items! Please, use 'queue/get/byparams' resource");
 		
 		setRespInfoInitialData(request);
 		
@@ -118,15 +131,16 @@ public class LRSServiceQueueFile {
 		finalHttpStatus = HttpStatus.OK;
 		setRespInfoFootData(finalHttpStatus);
 		
-		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,cMsg);
+		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,messages);
 		requestConsoleOut.println(request,response);
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
 	}
 	
-	@RequestMapping(value = "/queue/get/uploading", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/queue/v1/getuploading", method = RequestMethod.GET)
 	public ResponseEntity getuploading(HttpServletRequest request) {
-		String cMsg = new String("These resource can be slow and return many items! Please, use 'queue/get/byparams' resource");
+		LRSResponseMessages messages = new LRSResponseMessages();	
+		messages.addMessage("WARNING!!! This resource can be slow and return many items! Please, use 'queue/get/byparams' resource");
 		
 		setRespInfoInitialData(request);
 		
@@ -135,15 +149,16 @@ public class LRSServiceQueueFile {
 		finalHttpStatus = HttpStatus.OK;
 		setRespInfoFootData(finalHttpStatus);
 		
-		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,cMsg);
+		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,messages);
 		requestConsoleOut.println(request,response);
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
 	}
 	
-	@RequestMapping(value = "/queue/get/uploadedstandard", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/queue/v1/getuploadedstandard", method = RequestMethod.GET)
 	public ResponseEntity getupstd(HttpServletRequest request) {
-		String cMsg = new String("These resource can be slow and return many items! Please, use 'queue/get/byparams' resource");
+		LRSResponseMessages messages = new LRSResponseMessages();	
+		messages.addMessage("WARNING!!! This resource can be slow and return many items! Please, use 'queue/get/byparams' resource");
 		
 		setRespInfoInitialData(request);
 		
@@ -152,15 +167,16 @@ public class LRSServiceQueueFile {
 		finalHttpStatus = HttpStatus.OK;
 		setRespInfoFootData(finalHttpStatus);
 		
-		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,cMsg);
+		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,messages);
 		requestConsoleOut.println(request,response);
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
 	}
 	
-	@RequestMapping(value = "/queue/get/convertingprocess", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/queue/v1/getconvertingprocess", method = RequestMethod.GET)
 	public ResponseEntity getconvprocess(HttpServletRequest request) {
-		String cMsg = new String("These resource can be slow and return many items! Please, use 'queue/get/byparams' resource");
+		LRSResponseMessages messages = new LRSResponseMessages();	
+		messages.addMessage("WARNING!!! This resource can be slow and return many items! Please, use 'queue/get/byparams' resource");
 		
 		setRespInfoInitialData(request);
 		
@@ -169,15 +185,16 @@ public class LRSServiceQueueFile {
 		finalHttpStatus = HttpStatus.OK;
 		setRespInfoFootData(finalHttpStatus);
 		
-		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,cMsg);
+		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,messages);
 		requestConsoleOut.println(request,response);
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
 	}
 	
-	@RequestMapping(value = "/queue/get/finished", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/queue/v1/getfinished", method = RequestMethod.GET)
 	public ResponseEntity getdone(HttpServletRequest request) {
-		String cMsg = new String("These resource can be slow and return many items! Please, use 'queue/get/byparams' resource");
+		LRSResponseMessages messages = new LRSResponseMessages();	
+		messages.addMessage("WARNING!!! This resource can be slow and return many items! Please, use 'queue/get/byparams' resource");
 		
 		setRespInfoInitialData(request);
 		
@@ -186,15 +203,16 @@ public class LRSServiceQueueFile {
 		finalHttpStatus = HttpStatus.OK;
 		setRespInfoFootData(finalHttpStatus);
 		
-		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,"");
+		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,messages);
 		requestConsoleOut.println(request,response);
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
 	}
 	
-	@RequestMapping(value = "/queue/get/failed", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/queue/v1/getfailed", method = RequestMethod.GET)
 	public ResponseEntity getwitherr(HttpServletRequest request) {
-		String cMsg = new String("These resource can be slow and return many items! Please, use 'queue/get/byparams' resource");
+		LRSResponseMessages messages = new LRSResponseMessages();	
+		messages.addMessage("WARNING!!! This resource can be slow and return many items! Please, use 'queue/get/byparams' resource");
 		
 		setRespInfoInitialData(request);
 		
@@ -203,16 +221,15 @@ public class LRSServiceQueueFile {
 		finalHttpStatus = HttpStatus.OK;
 		setRespInfoFootData(finalHttpStatus);
 		
-		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,cMsg);
+		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,messages);
 		requestConsoleOut.println(request,response);
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
 	}
 	
-	@RequestMapping(value = "/queue/get/byparams", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/queue/v1/getbyparams", method = RequestMethod.GET)
 	public ResponseEntity getbyparams(HttpServletRequest request, @RequestBody LRSQueueFileFilterOptions queueOptions) {
-		
-		String cMsg = new String();
+		LRSResponseMessages messages = new LRSResponseMessages();	
 		String cloudProvider = queueOptions.getCloudProvider().trim();
 		String status = queueOptions.getStatus().trim();
 		LocalDateTime insStartDate = queueOptions.getInsertedStartDate();
@@ -222,23 +239,24 @@ public class LRSServiceQueueFile {
 		
 		if ((cloudProvider.isEmpty()) || (status.isEmpty()) || (insStartDate == null) || insEndDate == null) {
 			finalHttpStatus = HttpStatus.BAD_REQUEST;
-			cMsg = "The body fields 'cloudProvider', 'insertedStartDate', 'insertedEndDate' and 'status' are mandatory! Please, check it and try again!";
+			messages.addMessage("The body fields 'cloudProvider', 'insertedStartDate', 'insertedEndDate' and 'status' are mandatory! Please, check it and try again!");
 		} else {
 			//Search based in body parameters
 			//aFiles = queueFileRepository.findByFilter(cloudProvider,status,insStartDate,insEndDate);	
 			aFiles = queueFileRepository.findByFilter(cloudProvider,status,insStartDate,insEndDate);	
 			finalHttpStatus = HttpStatus.OK;
-			cMsg = "";
+			messages.addMessage("Transaction OK!");
 		}
 		setRespInfoFootData(finalHttpStatus);
-		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,cMsg);
+		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,messages);
 		requestConsoleOut.println(request,response);
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
 	}
 
-	@RequestMapping(value ="/queue/insertnew", method = RequestMethod.POST)
+	@RequestMapping(value ="LRSManager/queue/v1/inserttolist", method = RequestMethod.POST)
     public ResponseEntity insertNew(HttpServletRequest request, @RequestBody LRSQueueFileForm queueForm) {
+		LRSResponseMessages messages = new LRSResponseMessages();	
 		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel();
 		List<LRSQueueFile> files = new ArrayList<>();
 		
@@ -257,29 +275,97 @@ public class LRSServiceQueueFile {
 			
 			//Create a Response
 			files.add(newFile);
-			String cMsg = "File ".concat(newFile.getOriginalfullname()).concat(" successfully added to queue list. It will upload in '".concat(newFile.getCloudProvider()).concat("' public cloud "));
-			finalHttpStatus = HttpStatus.OK;
-			setRespInfoFootData(finalHttpStatus);
-						
-			response = new LRSQueueFileServiceModel(responseInfo,files,cMsg);
-			
-			
+			messages.addMessage("File ".concat(newFile.getOriginalfullname()).concat(" successfully added to queue list. It will upload in '".concat(newFile.getCloudProvider()).concat("' public cloud ")));
+			finalHttpStatus = HttpStatus.OK;			
 		} else {	
 			//Just create a response using a stored parameter data
 			files.add(fileExists);
-			String cMsg = "The file ".concat(fileExists.getOriginalfullname()).concat(" already exists in Queue List to will upload in ".concat(fileExists.getCloudProvider()).concat(" public cloud"));
-			
-			finalHttpStatus = HttpStatus.CONFLICT;
-			setRespInfoFootData(finalHttpStatus);
-			
-			response = new LRSQueueFileServiceModel(responseInfo,files,cMsg);
-			
+			messages.addMessage("The file ".concat(fileExists.getOriginalfullname()).concat(" already exists in Queue List to will upload in ".concat(fileExists.getCloudProvider()).concat(" public cloud")));
+			finalHttpStatus = HttpStatus.CONFLICT;			
 			
 		}		
+		
+		setRespInfoFootData(finalHttpStatus);		
+		response = new LRSQueueFileServiceModel(responseInfo,files,messages);
 		requestConsoleOut.println(request,response);
 			
 		
-		return ResponseEntity.status(finalHttpStatus).body(response);	
-		
+		return ResponseEntity.status(finalHttpStatus).body(response);		
     }
+	
+	@RequestMapping(value ="LRSManager/queue/v1/removetolist", method = RequestMethod.DELETE)
+    public ResponseEntity delete(HttpServletRequest request, @RequestBody LRSQueueFileForm queueForm) {
+		LRSResponseMessages messages = new LRSResponseMessages();	
+		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel();
+		List<LRSQueueFile> files = new ArrayList<>();
+		
+		setRespInfoInitialData(request);
+		requestConsoleOut.println(request,queueForm);
+		
+		//Check if the file already added before
+		LRSQueueFile fileExists =  queueFileRepository.findExists(queueForm.getCloudProvider(), queueForm.getOriginalfullname());	
+		
+		
+		if (fileExists != null)  {
+			
+			//delete file to list
+			queueFileRepository.delete(fileExists);
+			messages.addMessage("File ".concat(fileExists.getOriginalfullname()).concat(" successfully deleted to queue list. It will not uploaded in '".concat(fileExists.getCloudProvider()).concat("' public cloud ")));
+			finalHttpStatus = HttpStatus.OK;			
+		} else {	
+			//Just create a response using a stored parameter data
+			fileExists = queueForm.convertToNew();
+			messages.addMessage("The file ".concat(fileExists.getOriginalfullname()).concat(" does not found in Queue List to will upload in ".concat(fileExists.getCloudProvider()).concat(" public cloud")));
+			finalHttpStatus = HttpStatus.CONFLICT;			
+			
+		}		
+		
+		//Create a Response
+		files.add(fileExists);
+		setRespInfoFootData(finalHttpStatus);		
+		response = new LRSQueueFileServiceModel(responseInfo,files,messages);
+		requestConsoleOut.println(request,response);
+			
+		
+		return ResponseEntity.status(finalHttpStatus).body(response);		
+    }
+	
+	@RequestMapping(value ="LRSManager/queue/v1/updatestatus", method = RequestMethod.PUT)
+    public ResponseEntity updatestatus(HttpServletRequest request, @RequestBody LRSQueueFileForm queueForm) {
+		LRSResponseMessages messages = new LRSResponseMessages();	
+		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel();
+		List<LRSQueueFile> files = new ArrayList<>();
+		
+		setRespInfoInitialData(request);
+		requestConsoleOut.println(request,queueForm);
+		
+		//Check if the file already added before
+		LRSQueueFile fileExists =  queueFileRepository.findExists(queueForm.getCloudProvider(), queueForm.getOriginalfullname());	
+		
+		
+		if (fileExists != null)  {
+		
+			//update status
+			fileExists.setStatus(queueForm.getStatus());
+			queueFileRepository.saveAndFlush(fileExists);
+			
+			
+			messages.addMessage("The status of file ".concat(fileExists.getOriginalfullname()).concat(" successfully updated in queue list to '".concat(fileExists.getCloudProvider()).concat("' public cloud ")));
+			finalHttpStatus = HttpStatus.OK;			
+		} else {	
+			fileExists = queueForm.convertToNew();
+			messages.addMessage("The status of file ".concat(fileExists.getOriginalfullname()).concat(" does not found in Queue List to will upload in ".concat(fileExists.getCloudProvider()).concat(" public cloud")));
+			finalHttpStatus = HttpStatus.CONFLICT;	
+		}		
+		
+		//Create a Response
+		files.add(fileExists);
+		setRespInfoFootData(finalHttpStatus);		
+		response = new LRSQueueFileServiceModel(responseInfo,files,messages);
+		requestConsoleOut.println(request,response);
+			
+		
+		return ResponseEntity.status(finalHttpStatus).body(response);		
+    }
+	
 }

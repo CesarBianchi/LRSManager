@@ -25,6 +25,9 @@ import br.com.lrsbackup.LRSManager.util.LRSApplicationVersion;
 import br.com.lrsbackup.LRSManager.util.LRSRequestConsoleOut;
 import br.com.lrsbackup.LRSManager.util.LRSRequestIDGenerator;
 import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
+import br.com.lrsbackup.LRSManager.util.LRSResponseMessage;
+import br.com.lrsbackup.LRSManager.util.LRSResponseMessages;
+
 import java.util.List;
 
 @RestController
@@ -46,9 +49,11 @@ public class LRSServiceProtectedDirs {
 	}
 	
 	
-	@RequestMapping(value = "/protecteddirs/getall", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/protecteddirs/v1/getall", method = RequestMethod.GET)
 	public ResponseEntity getall(HttpServletRequest request) {
+		LRSResponseMessages messages = new LRSResponseMessages();
 		
+
 		
 		setRespInfoInitialData(request);
 		
@@ -56,15 +61,17 @@ public class LRSServiceProtectedDirs {
 		
 		finalHttpStatus = HttpStatus.OK;
 		setRespInfoFootData(finalHttpStatus);
+		messages.addMessage("Transaction Ok!");
 		
-		LRSProtectedDirServiceModel response = new LRSProtectedDirServiceModel(responseInfo,dirs,"");
+		
+		LRSProtectedDirServiceModel response = new LRSProtectedDirServiceModel(responseInfo,dirs,messages);
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
 	}
 	
-	@RequestMapping(value = "/protecteddirs/get", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/protecteddirs/v1/get", method = RequestMethod.GET)
 	public ResponseEntity get(HttpServletRequest request, @RequestBody LRSProtectedDirForm pDir) {
-		
+		LRSResponseMessages messages = new LRSResponseMessages();	
 		List<LRSProtectedDir> dirs = new ArrayList<>();
 		
 		setRespInfoInitialData(request);
@@ -74,25 +81,26 @@ public class LRSServiceProtectedDirs {
 		if (protectedDir != null) { 
 			dirs.add(protectedDir);
 			finalHttpStatus = HttpStatus.OK;
+			messages.addMessage("Transaction Ok!");
 		} else {
 			finalHttpStatus = HttpStatus.CONFLICT;
+			messages.addMessage("OriginalFileName not found!");
 		}
 			
 		setRespInfoFootData(finalHttpStatus);
 		
-		LRSProtectedDirServiceModel response = new LRSProtectedDirServiceModel(responseInfo,dirs,"");
+		LRSProtectedDirServiceModel response = new LRSProtectedDirServiceModel(responseInfo,dirs,messages);
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
 	}
 	
-	@RequestMapping(value ="/protecteddirs/new", method = RequestMethod.POST)
+	@RequestMapping(value ="LRSManager/protecteddirs/v1/new", method = RequestMethod.POST)
     public ResponseEntity insertNew(HttpServletRequest request, @RequestBody LRSProtectedDirForm pDir) {
-		
+		LRSResponseMessages messages = new LRSResponseMessages();	
 		LRSProtectedDirServiceModel response = new LRSProtectedDirServiceModel();
 		List<LRSProtectedDir> dirs = new ArrayList<>();
 		boolean lOk = true;
-		String cMsg = new String();
-		
+				
 		setRespInfoInitialData(request);
 		requestConsoleOut.println(request,pDir);
 		
@@ -103,23 +111,23 @@ public class LRSServiceProtectedDirs {
 		
 			//check if mandatory fields  isn't empty
 			if (pDir.getName().trim().isEmpty()) {
-				cMsg = "The 'name' field is mandatory. Please, check it and try again";
+				messages.addMessage("The 'name' field is mandatory. Please, check it and try again");
 				lOk = false;
 				
 			} else if (pDir.getOriginalPath().trim().isEmpty()) {
-				cMsg = "The 'origin' Path field is mandatory. Please, check it and try again";
+				messages.addMessage("The 'origin' Path field is mandatory. Please, check it and try again");
 				lOk = false;
 
 			} /*else if (this.awsCloudIsActive() && pDir.getPathaws().trim().isEmpty()) {
-				cMsg = "The AWS Cloud is Active in this environment, so 'pathaws' field is mandatory. Please, check it and try again";
+				messages.addMessage("The AWS Cloud is Active in this environment, so 'pathaws' field is mandatory. Please, check it and try again");
 				lOk = false;
 
 			} else if (this.azureCloudIsActive() && pDir.getPathazure().trim().isEmpty()) {
-				cMsg = "The AZURE Cloud is Active in this environment, so 'pathazure' field is mandatory. Please, check it and try again";
+				messages.addMessage("The AZURE Cloud is Active in this environment, so 'pathazure' field is mandatory. Please, check it and try again");
 				lOk = false;
 
 			} else if (this.oracleCloudIsActive() && pDir.getPathoracle().trim().isEmpty()) {
-				cMsg = "The ORACLE Cloud is Active in this environment, so 'pathoracle' field is mandatory. Please, check it and try again";
+				messages.addMessage("The ORACLE Cloud is Active in this environment, so 'pathoracle' field is mandatory. Please, check it and try again");
 				lOk = false;
 
 			}	*/	
@@ -138,7 +146,7 @@ public class LRSServiceProtectedDirs {
 			
 				//Create a Response
 				dirs.add(newDir);
-				cMsg = "Protected Directory '".concat(newDir.getOriginPath()).concat("' successfully mapped");
+				messages.addMessage("Protected Directory '".concat(newDir.getOriginPath()).concat("' successfully mapped"));
 				finalHttpStatus = HttpStatus.OK;
 				setRespInfoFootData(finalHttpStatus);
 			}			
@@ -146,13 +154,13 @@ public class LRSServiceProtectedDirs {
 			
 			//Just create a response using a stored parameter data
 			dirs.add(pDir.convertToProtectedDir());
-			cMsg = "Protected Directory '".concat(pDir.getOriginalPath()).concat("' already mapped in database. Transaction was not commited");
+			messages.addMessage("Protected Directory '".concat(pDir.getOriginalPath()).concat("' already mapped in database. Transaction was not commited"));
 			
 			finalHttpStatus = HttpStatus.CONFLICT;
 			setRespInfoFootData(finalHttpStatus);
 			
-		}		
-		response = new LRSProtectedDirServiceModel(responseInfo,dirs,cMsg);
+		}
+		response = new LRSProtectedDirServiceModel(responseInfo,dirs,messages);
 		requestConsoleOut.println(request,response);
 			
 		
@@ -160,13 +168,12 @@ public class LRSServiceProtectedDirs {
 		
     }
 	
-	@RequestMapping(value ="/protecteddirs/update", method = RequestMethod.POST)
+	@RequestMapping(value ="LRSManager/protecteddirs/v1/update", method = RequestMethod.PUT)
     public ResponseEntity update(HttpServletRequest request, @RequestBody LRSProtectedDirForm pDir) {
-		
+		LRSResponseMessages messages = new LRSResponseMessages();
 		LRSProtectedDirServiceModel response = new LRSProtectedDirServiceModel();
 		List<LRSProtectedDir> dirs = new ArrayList<>();
 		boolean lOk = true;
-		String cMsg = new String();
 		
 		setRespInfoInitialData(request);
 		requestConsoleOut.println(request,pDir);
@@ -175,29 +182,29 @@ public class LRSServiceProtectedDirs {
 		LRSProtectedDir dirExists =  protectedDirRepository.findBydirname(pDir.getOriginalPath()); 
 		
 		if (dirExists == null)  {
-			cMsg = "The Original Path '".concat(pDir.getOriginalPath()).concat("' not found. Please, check it and try again");
+			messages.addMessage("The Original Path '".concat(pDir.getOriginalPath()).concat("' not found. Please, check it and try again"));
 			lOk = false;
 		} else {	
 			
 			//check if mandatory fields  isn't empty
 			if (pDir.getName().trim().isEmpty()) {
-				cMsg = "The 'name' field is mandatory. Please, check it and try again";
+				messages.addMessage("The 'name' field is mandatory. Please, check it and try again");
 				lOk = false;
 				
 			} else if (pDir.getOriginalPath().trim().isEmpty()) {
-				cMsg = "The 'origin' Path field is mandatory. Please, check it and try again";
+				messages.addMessage("The 'origin' Path field is mandatory. Please, check it and try again");
 				lOk = false;
 
 			} /*else if (this.awsCloudIsActive() && pDir.getPathaws().trim().isEmpty()) {
-				cMsg = "The AWS Cloud is Active in this environment, so 'pathaws' field is mandatory. Please, check it and try again";
+				messages.addMessage("The AWS Cloud is Active in this environment, so 'pathaws' field is mandatory. Please, check it and try again");
 				lOk = false;
 
 			} else if (this.azureCloudIsActive() && pDir.getPathazure().trim().isEmpty()) {
-				cMsg = "The AZURE Cloud is Active in this environment, so 'pathazure' field is mandatory. Please, check it and try again";
+				messages.addMessage("The AZURE Cloud is Active in this environment, so 'pathazure' field is mandatory. Please, check it and try again");
 				lOk = false;
 
 			} else if (this.oracleCloudIsActive() && pDir.getPathoracle().trim().isEmpty()) {
-				cMsg = "The ORACLE Cloud is Active in this environment, so 'pathoracle' field is mandatory. Please, check it and try again";
+				messages.addMessage("The ORACLE Cloud is Active in this environment, so 'pathoracle' field is mandatory. Please, check it and try again");
 				lOk = false;
 
 			}	*/	
@@ -224,13 +231,81 @@ public class LRSServiceProtectedDirs {
 				
 				//Create a Response
 				dirs.add(dirExists);
-				cMsg = "Protected Directory '".concat(dirExists.getOriginPath()).concat("' successfully updated");
+				messages.addMessage("Protected Directory '".concat(dirExists.getOriginPath()).concat("' successfully updated"));
 				finalHttpStatus = HttpStatus.OK;
 				setRespInfoFootData(finalHttpStatus);
 			}	
 			
 		}		
-		response = new LRSProtectedDirServiceModel(responseInfo,dirs,cMsg);
+		response = new LRSProtectedDirServiceModel(responseInfo,dirs,messages);
+		requestConsoleOut.println(request,response);
+			
+		
+		return ResponseEntity.status(finalHttpStatus).body(response);	
+		
+    }
+	
+	@RequestMapping(value ="LRSManager/protecteddirs/v1/delete", method = RequestMethod.DELETE)
+    public ResponseEntity delete(HttpServletRequest request, @RequestBody LRSProtectedDirForm pDir) {
+		LRSResponseMessages messages = new LRSResponseMessages();
+		LRSProtectedDirServiceModel response = new LRSProtectedDirServiceModel();
+		List<LRSProtectedDir> dirs = new ArrayList<>();
+		boolean lOk = true;
+		
+		setRespInfoInitialData(request);
+		requestConsoleOut.println(request,pDir);
+		
+		//Check if the directory exists
+		LRSProtectedDir dirExists =  protectedDirRepository.findBydirname(pDir.getOriginalPath()); 
+		
+		if (dirExists == null)  {
+			messages.addMessage("The Original Path '".concat(pDir.getOriginalPath()).concat("' not found. Please, check it and try again"));
+			lOk = false;
+		} else {	
+			
+			//check if mandatory fields  isn't empty
+			if (pDir.getName().trim().isEmpty()) {
+				messages.addMessage("The 'name' field is mandatory. Please, check it and try again");
+				lOk = false;
+				
+			} else if (pDir.getOriginalPath().trim().isEmpty()) {
+				messages.addMessage("The 'origin' Path field is mandatory. Please, check it and try again");
+				lOk = false;
+
+			} /*else if (this.awsCloudIsActive() && pDir.getPathaws().trim().isEmpty()) {
+				messages.addMessage("The AWS Cloud is Active in this environment, so 'pathaws' field is mandatory. Please, check it and try again");
+				lOk = false;
+
+			} else if (this.azureCloudIsActive() && pDir.getPathazure().trim().isEmpty()) {
+				messages.addMessage("The AZURE Cloud is Active in this environment, so 'pathazure' field is mandatory. Please, check it and try again");
+				lOk = false;
+
+			} else if (this.oracleCloudIsActive() && pDir.getPathoracle().trim().isEmpty()) {
+				messages.addMessage("The ORACLE Cloud is Active in this environment, so 'pathoracle' field is mandatory. Please, check it and try again");
+				lOk = false;
+
+			}	*/	
+				
+			if (!lOk) { 
+				finalHttpStatus = HttpStatus.BAD_REQUEST;
+				setRespInfoFootData(finalHttpStatus);
+			} else {	
+
+				//Delete Protected Dir
+				protectedDirRepository.delete(dirExists);
+			
+				finalHttpStatus = HttpStatus.OK;
+				setRespInfoFootData(finalHttpStatus);
+				
+				//Create a Response
+				dirs.add(dirExists);
+				messages.addMessage("Protected Directory '".concat(dirExists.getOriginPath()).concat("' successfully deleted"));
+				finalHttpStatus = HttpStatus.OK;
+				setRespInfoFootData(finalHttpStatus);
+			}	
+			
+		}		
+		response = new LRSProtectedDirServiceModel(responseInfo,dirs,messages);
 		requestConsoleOut.println(request,response);
 			
 		

@@ -23,6 +23,8 @@ import br.com.lrsbackup.LRSManager.persistence.repository.LRSParameterRepository
 import br.com.lrsbackup.LRSManager.services.model.LRSConfigServiceModel;
 import br.com.lrsbackup.LRSManager.services.model.LRSParameterServiceModel;
 import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
+import br.com.lrsbackup.LRSManager.util.LRSResponseMessage;
+import br.com.lrsbackup.LRSManager.util.LRSResponseMessages;
 import br.com.lrsbackup.LRSManager.util.LRSApplicationVersion;
 import br.com.lrsbackup.LRSManager.util.LRSConsoleOut;
 import br.com.lrsbackup.LRSManager.util.LRSRequestConsoleOut;
@@ -46,23 +48,25 @@ public class LRSServiceParameters {
 		this.responseInfo.setServiceVersion(appDetails.getServiceVersion());
 	}
 	
-	@RequestMapping(value = "/parameters/getall", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/parameters/v1/getall", method = RequestMethod.GET)
     public ResponseEntity getAll(HttpServletRequest request) {
-				
+		LRSResponseMessages messages = new LRSResponseMessages();		
 		setRespInfoInitialData(request);
 		finalHttpStatus = HttpStatus.OK;
 		List<LRSParameter> parameters = parameterRepository.findAll();
 		setRespInfoFootData(finalHttpStatus);
+		messages.addMessage("Transaction Ok!");
 		
-		LRSParameterServiceModel response = new LRSParameterServiceModel(responseInfo,parameters,"");
+		LRSParameterServiceModel response = new LRSParameterServiceModel(responseInfo,parameters,messages);
 		requestConsoleOut.println(request,response);
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
     }
 	
-	@RequestMapping(value ="/parameters/getbyname", method = RequestMethod.GET)
+	@RequestMapping(value ="LRSManager/parameters/v1/getbyname", method = RequestMethod.GET)
     public ResponseEntity getbyname(String name, HttpServletRequest request) {
-
+		LRSResponseMessages messages = new LRSResponseMessages();		
+		
 		setRespInfoInitialData(request);
 		
 		LRSParameter param = parameterRepository.findByname(name);
@@ -72,9 +76,9 @@ public class LRSServiceParameters {
 		
 		finalHttpStatus = HttpStatus.OK;
 		setRespInfoFootData(finalHttpStatus);
+		messages.addMessage("Transaction Ok!");
 		
-		
-		LRSParameterServiceModel response = new LRSParameterServiceModel(responseInfo,parameters,"");
+		LRSParameterServiceModel response = new LRSParameterServiceModel(responseInfo,parameters,messages);
 		
 		
 		requestConsoleOut.println(request,response);
@@ -83,9 +87,9 @@ public class LRSServiceParameters {
 		
     }
 	
-	@RequestMapping(value ="/parameters/getbyid", method = RequestMethod.GET)
+	@RequestMapping(value ="LRSManager/parameters/v1/getbyid", method = RequestMethod.GET)
     public ResponseEntity getbyid(Long id, HttpServletRequest request) {
-
+		LRSResponseMessages messages = new LRSResponseMessages();	
 		setRespInfoInitialData(request);
 		
 		LRSParameter param = parameterRepository.findByid(id);
@@ -93,8 +97,9 @@ public class LRSServiceParameters {
 		parameters.add(param);
 		finalHttpStatus = HttpStatus.OK;
 		setRespInfoFootData(finalHttpStatus);
+		messages.addMessage("Transaction Ok!");
 		
-		LRSParameterServiceModel response = new LRSParameterServiceModel(responseInfo,parameters,"");
+		LRSParameterServiceModel response = new LRSParameterServiceModel(responseInfo,parameters,messages);
 
 		requestConsoleOut.println(request,response);
 		
@@ -102,12 +107,13 @@ public class LRSServiceParameters {
 		
     }
 	
-	@RequestMapping(value ="/parameters/insertnew", method = RequestMethod.POST)
+	@RequestMapping(value ="LRSManager/parameters/v1/insertnew", method = RequestMethod.POST)
     public ResponseEntity insertNew(HttpServletRequest request, @RequestBody LRSParameterForm parameter) {
 		LRSParameterServiceModel response = new LRSParameterServiceModel();
-		
+		List<LRSParameter> parameters = new ArrayList<>();
 		setRespInfoInitialData(request);
 		requestConsoleOut.println(request,parameter);
+		LRSResponseMessages messages = new LRSResponseMessages();
 		
 		//Check if the name was before used
 		LRSParameter paramExists =  parameterRepository.findByname(parameter.getName()); 
@@ -119,28 +125,20 @@ public class LRSServiceParameters {
 			parameterRepository.save(param);
 			
 			//Create a Response
-			List<LRSParameter> parameters = new ArrayList<>();
 			parameters.add(param);
-			String cMsg = "Parameter ".concat(param.getName()).concat(" successfully added");
-			finalHttpStatus = HttpStatus.OK;
-			setRespInfoFootData(finalHttpStatus);
-						
-			response = new LRSParameterServiceModel(responseInfo,parameters,cMsg);
+			messages.addMessage("Parameter ".concat(param.getName()).concat(" successfully added"));
 			
+			finalHttpStatus = HttpStatus.OK;
 			
 		} else {	
 			//Just create a response using a stored parameter data
-			List<LRSParameter> parameters = new ArrayList<>();
 			parameters.add(paramExists);
-			String cMsg = "Parameter ".concat(parameter.getName()).concat(" already exists in database. Transaction was not commited");
-			
+			messages.addMessage("Parameter ".concat(parameter.getName()).concat(" already exists in database. Transaction was not commited"));	
 			finalHttpStatus = HttpStatus.CONFLICT;
-			setRespInfoFootData(finalHttpStatus);
-			
-			response = new LRSParameterServiceModel(responseInfo,parameters,cMsg);
-			
-			
 		}		
+		
+		setRespInfoFootData(finalHttpStatus);
+		response = new LRSParameterServiceModel(responseInfo,parameters,messages);
 		requestConsoleOut.println(request,response);
 			
 		
@@ -148,8 +146,11 @@ public class LRSServiceParameters {
 		
     }
 	
+	@RequestMapping(value ="LRSManager/parameters/v1/updatevalue", method = RequestMethod.PUT)
 	public ResponseEntity updateValue(HttpServletRequest request, @RequestBody LRSParameterForm parameter) {
 		LRSParameterServiceModel response;
+		List<LRSParameter> parameters = new ArrayList<>();
+		LRSResponseMessages messages = new LRSResponseMessages();	
 		
 		setRespInfoInitialData(request);
 
@@ -158,74 +159,49 @@ public class LRSServiceParameters {
 		
 		//Parameter Found ?
 		if (param != null) {
-		
 			param.setValue(parameter.getValue());
 			parameterRepository.saveAndFlush(param);
-		
-			//Create a Response
-			List<LRSParameter> parameters = new ArrayList<>();
-			parameters.add(param);
-			String cMsg = "Parameter ".concat(param.getName()).concat(" was successfully updated");
-			finalHttpStatus = HttpStatus.OK;
-			setRespInfoFootData(finalHttpStatus);
-			response = new LRSParameterServiceModel(responseInfo,parameters,cMsg);
-						
+			messages.addMessage("Parameter ".concat(param.getName()).concat(" was successfully updated"));
+			finalHttpStatus = HttpStatus.OK;				
 		} else {
-			
-			//Create a Response
-			List<LRSParameter> parameters = new ArrayList<>();
-			parameters.add(param);
-			String cMsg = "Parameter ".concat(parameter.getName()).concat(" was not found. Transaction was not commited");
+			messages.addMessage("Parameter ".concat(parameter.getName()).concat(" was not found. Transaction was not commited"));
 			finalHttpStatus = HttpStatus.CONFLICT;
-			setRespInfoFootData(finalHttpStatus);
-			
-			response = new LRSParameterServiceModel(responseInfo,parameters,cMsg);
-			
 		}
 		
+		//Create a Response
+		setRespInfoFootData(finalHttpStatus);
+		parameters.add(param);
+		response = new LRSParameterServiceModel(responseInfo,parameters,messages);
 		requestConsoleOut.println(request,response);
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
 		
     }
 	
-	@RequestMapping(value ="/parameters/delete", method = RequestMethod.DELETE)
+	@RequestMapping(value ="LRSManager/parameters/v1/delete", method = RequestMethod.DELETE)
     public ResponseEntity delete(String name, HttpServletRequest request) {
 		LRSParameterServiceModel response;
-		
 		setRespInfoInitialData(request);
+		List<LRSParameter> parameters = new ArrayList<>();
+		LRSResponseMessages messages = new LRSResponseMessages();		
 		
 		//Search by Parameter
 		LRSParameter param = parameterRepository.findByname(name);
 		
 		//Parameter Found ?
 		if (param != null) {
-		
 			parameterRepository.delete(param);
-		
-			//Create a Response
-			List<LRSParameter> parameters = new ArrayList<>();
-			parameters.add(param);
-			String cMsg = "Parameter ".concat(param.getName()).concat(" was successfully deleted");
-			
-
+			messages.addMessage("Parameter ".concat(param.getName()).concat(" was successfully deleted"));
 			finalHttpStatus = HttpStatus.OK;
-			setRespInfoFootData(finalHttpStatus);
-			
-			response = new LRSParameterServiceModel(responseInfo,parameters,cMsg);
-		} else {
-			
-			//Create a Response
-			List<LRSParameter> parameters = new ArrayList<>();
-			parameters.add(param);
-			String cMsg = "Parameter ".concat(name).concat(" was not found. Transaction was not commited");
+		} else {			
+			messages.addMessage("Parameter ".concat(name).concat(" was not found. Transaction was not commited"));
 			finalHttpStatus = HttpStatus.CONFLICT;
-			setRespInfoFootData(finalHttpStatus);
-			
-			response = new LRSParameterServiceModel(responseInfo,parameters,cMsg);
-			
 		}
-
+		
+		//Create a Response
+		parameters.add(param);
+		setRespInfoFootData(finalHttpStatus);
+		response = new LRSParameterServiceModel(responseInfo,parameters,messages);
 		requestConsoleOut.println(request,response);
 		
 		

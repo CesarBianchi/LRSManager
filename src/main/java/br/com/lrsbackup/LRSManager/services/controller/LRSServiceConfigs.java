@@ -21,6 +21,8 @@ import br.com.lrsbackup.LRSManager.util.LRSApplicationVersion;
 import br.com.lrsbackup.LRSManager.util.LRSRequestConsoleOut;
 import br.com.lrsbackup.LRSManager.util.LRSRequestIDGenerator;
 import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
+import br.com.lrsbackup.LRSManager.util.LRSResponseMessage;
+import br.com.lrsbackup.LRSManager.util.LRSResponseMessages;
 
 @RestController
 public class LRSServiceConfigs {
@@ -39,7 +41,7 @@ public class LRSServiceConfigs {
 		this.responseInfo.setServiceVersion(appDetails.getServiceVersion());
 	}
 	
-	@RequestMapping(value = "/configs/awsisenabled", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/configs/v1/awsisenabled", method = RequestMethod.GET)
     public ResponseEntity awsisenabled(HttpServletRequest request) {
 		LRSConfigServiceModel response = new LRSConfigServiceModel();
 		
@@ -62,7 +64,7 @@ public class LRSServiceConfigs {
 		return ResponseEntity.status(finalHttpStatus).body(response);	
     }
 	
-	@RequestMapping(value = "/configs/azureisenabled", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/configs/v1/azureisenabled", method = RequestMethod.GET)
     public ResponseEntity azureisenabled(HttpServletRequest request) {
 		LRSConfigServiceModel response = new LRSConfigServiceModel();
 		
@@ -83,7 +85,7 @@ public class LRSServiceConfigs {
 		return ResponseEntity.status(finalHttpStatus).body(response);	
     }
 	
-	@RequestMapping(value = "/configs/oracleisenabled", method = RequestMethod.GET)
+	@RequestMapping(value = "LRSManager/configs/v1/oracleisenabled", method = RequestMethod.GET)
     public ResponseEntity oracleisenabled(HttpServletRequest request) {
 		LRSConfigServiceModel response = new LRSConfigServiceModel();
 		
@@ -103,14 +105,14 @@ public class LRSServiceConfigs {
 		
 		return ResponseEntity.status(finalHttpStatus).body(response);	
     }
-	
-	
-	@RequestMapping(value = "/configs/getcloudcredentials", method = RequestMethod.GET)
+		
+	@RequestMapping(value = "LRSManager/configs/v1/getcloudcredentials", method = RequestMethod.GET)
     public ResponseEntity getCloudCredentials(HttpServletRequest request, String cloudProviderName) {
 		LRSParameterServiceModel response = new LRSParameterServiceModel();
 		String cCloudUserParamName = new String();
 		String cCloudKeyParamName = new String();
 		List<LRSParameter> parameters = new ArrayList<>();
+		LRSResponseMessages messages = new LRSResponseMessages();	
 		
 		if (cloudProviderName != null) {
 		
@@ -120,16 +122,20 @@ public class LRSServiceConfigs {
 				cCloudUserParamName = "UserCloudAWS";
 				cCloudKeyParamName = "KeyCloudAWS";
 				finalHttpStatus = HttpStatus.OK;
+				messages.addMessage("Transaction OK!");
 			} else if ((cloudProviderName.toUpperCase().trim().equals(LRSOptionsCloudProvider.AZURE.toString()))) {
 				cCloudUserParamName = "UserCloudAzure";
 				cCloudKeyParamName = "KeyCloudAzure";
 				finalHttpStatus = HttpStatus.OK;
+				messages.addMessage("Transaction OK!");
 			} else if ((cloudProviderName.toUpperCase().trim().equals(LRSOptionsCloudProvider.ORACLE.toString())))  {
 				cCloudUserParamName = "UserCloudOracle";
 				cCloudKeyParamName = "KeyCloudOracle";
 				finalHttpStatus = HttpStatus.OK;
+				messages.addMessage("Transaction OK!");
 			} else {
 				finalHttpStatus = HttpStatus.CONFLICT;
+				messages.addMessage("cloudProviderName not found in config list!");
 			}
 			
 			//Search UserParam
@@ -138,7 +144,7 @@ public class LRSServiceConfigs {
 			parameters.add(paramUser);
 			parameters.add(paramKey);		
 			setRespInfoFootData(finalHttpStatus);
-			response = new LRSParameterServiceModel(responseInfo,parameters,"");
+			response = new LRSParameterServiceModel(responseInfo,parameters,messages);
 
 			requestConsoleOut.println(request,response);
 			
@@ -169,7 +175,6 @@ public class LRSServiceConfigs {
 		return parameter;
 	}
 	
-
 	private void setRespInfoInitialData(HttpServletRequest request) {
 		this.responseInfo.setRequestTime(java.time.LocalTime.now().toString().substring(0,12));
 		this.responseInfo.setResourceName(request.getRequestURI());

@@ -6,25 +6,23 @@ import java.util.List;
 import br.com.lrsbackup.LRSManager.persistence.model.LRSParameter;
 import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
 import br.com.lrsbackup.LRSManager.util.LRSResponseMessage;
+import br.com.lrsbackup.LRSManager.util.LRSResponseMessages;
 
 public class LRSParameterServiceModel {
 
 	public LRSResponseInfo responseInfo = new LRSResponseInfo();
 	public List<LRSParameter> parameters = new ArrayList<>();
-	public List<LRSResponseMessage> messages = new ArrayList<>();
+	public LRSResponseMessages messages = new LRSResponseMessages();
 	
 	
 	public LRSParameterServiceModel() {
 		super();
 	}
 	
-	public LRSParameterServiceModel(LRSResponseInfo pInfo, List<LRSParameter> pParams, String msg) {	
-		LRSResponseMessage message = new LRSResponseMessage();
-		
+	public LRSParameterServiceModel(LRSResponseInfo pInfo, List<LRSParameter> pParams, LRSResponseMessages pMessages) {			
 		this.responseInfo = pInfo;
 		this.parameters = pParams;
-		message.setMessage(msg);
-		this.messages.add(message);
+		this.messages = pMessages;
 	}
 	
 }

@@ -5,7 +5,6 @@ import java.util.List;
 
 import br.com.lrsbackup.LRSManager.persistence.model.LRSParameter;
 import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
-import br.com.lrsbackup.LRSManager.util.LRSResponseMessage;
 import br.com.lrsbackup.LRSManager.util.LRSResponseMessages;
 
 public class LRSParameterServiceModel {

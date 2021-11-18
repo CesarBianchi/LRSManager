@@ -5,7 +5,6 @@ import java.util.List;
 
 import br.com.lrsbackup.LRSManager.persistence.model.LRSQueueFile;
 import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
-import br.com.lrsbackup.LRSManager.util.LRSResponseMessage;
 import br.com.lrsbackup.LRSManager.util.LRSResponseMessages;
 
 public class LRSQueueFileServiceModel {
@@ -15,7 +14,6 @@ public class LRSQueueFileServiceModel {
 	
 	public LRSQueueFileServiceModel() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	

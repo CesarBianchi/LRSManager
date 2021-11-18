@@ -5,7 +5,6 @@ import java.util.List;
 
 import br.com.lrsbackup.LRSManager.persistence.model.LRSProtectedDir;
 import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
-import br.com.lrsbackup.LRSManager.util.LRSResponseMessage;
 import br.com.lrsbackup.LRSManager.util.LRSResponseMessages;
 
 public class LRSProtectedDirServiceModel {
@@ -15,7 +14,6 @@ public class LRSProtectedDirServiceModel {
 	
 	public LRSProtectedDirServiceModel() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public LRSProtectedDirServiceModel(LRSResponseInfo pInfo, List<LRSProtectedDir> dirs, LRSResponseMessages pMessages) {	

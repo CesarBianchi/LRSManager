@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.lrsbackup.LRSManager.enums.LRSOptionsFileStatus;
 import br.com.lrsbackup.LRSManager.persistence.controller.form.LRSParameterForm;
 import br.com.lrsbackup.LRSManager.persistence.controller.form.LRSQueueFileFilterOptions;
 import br.com.lrsbackup.LRSManager.persistence.controller.form.LRSQueueFileForm;
-import br.com.lrsbackup.LRSManager.persistence.model.LRSOptionsFileStatus;
 import br.com.lrsbackup.LRSManager.persistence.model.LRSParameter;
 import br.com.lrsbackup.LRSManager.persistence.model.LRSQueueFile;
 import br.com.lrsbackup.LRSManager.persistence.repository.LRSQueueFileRepository;

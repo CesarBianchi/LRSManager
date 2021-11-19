@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class LRSCloudInvetoryRequests {
+public class LRSCloudInvetoryRequest {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -17,11 +17,11 @@ public class LRSCloudInvetoryRequests {
 	private String protocolID = new String();
 	private String status = new String();
 	
-	public LRSCloudInvetoryRequests() {
+	public LRSCloudInvetoryRequest() {
 		super();
 	}
 
-	public LRSCloudInvetoryRequests(Long id, String cloudProvider, LocalDateTime requestedDate, String protocolID, String status) {
+	public LRSCloudInvetoryRequest(Long id, String cloudProvider, LocalDateTime requestedDate, String protocolID, String status) {
 		this.id = id;
 		this.cloudProvider = cloudProvider;
 		this.requestedDate = requestedDate;

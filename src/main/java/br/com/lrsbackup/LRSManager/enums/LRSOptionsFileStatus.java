@@ -1,4 +1,4 @@
-package br.com.lrsbackup.LRSManager.persistence.model;
+package br.com.lrsbackup.LRSManager.enums;
 
 public enum LRSOptionsFileStatus {
 	READY_TO_UP,

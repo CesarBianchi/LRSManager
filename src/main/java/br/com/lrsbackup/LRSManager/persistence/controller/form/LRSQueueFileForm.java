@@ -2,7 +2,7 @@ package br.com.lrsbackup.LRSManager.persistence.controller.form;
 
 import java.time.LocalDateTime;
 
-import br.com.lrsbackup.LRSManager.persistence.model.LRSOptionsFileStatus;
+import br.com.lrsbackup.LRSManager.enums.LRSOptionsFileStatus;
 import br.com.lrsbackup.LRSManager.persistence.model.LRSQueueFile;
 
 public class LRSQueueFileForm {

@@ -49,7 +49,4 @@ public class LRSConfigServiceModel {
 		this.messages = messages;
 	}
 	
-	
-	
-	
 }

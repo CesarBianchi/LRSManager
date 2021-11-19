@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import br.com.lrsbackup.LRSManager.enums.LRSOptionsCloudProvider;
 import br.com.lrsbackup.LRSManager.persistence.controller.form.LRSUpdEnginePathForm;
-import br.com.lrsbackup.LRSManager.persistence.model.LRSOptionsCloudProvider;
 import br.com.lrsbackup.LRSManager.persistence.model.LRSParameter;
 import br.com.lrsbackup.LRSManager.persistence.repository.LRSParameterRepository;
 import br.com.lrsbackup.LRSManager.services.model.LRSConfigServiceModel;
@@ -28,7 +27,7 @@ import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
 import br.com.lrsbackup.LRSManager.util.LRSResponseMessages;
 
 @RestController
-public class LRSServiceConfigs {
+public class LRSServiceConfigs { 
 
 	@Autowired
 	private LRSParameterRepository parameterRepository;
@@ -159,30 +158,11 @@ public class LRSServiceConfigs {
 		return ResponseEntity.status(finalHttpStatus).body(response);	
     }
 	
-	public LRSParameter getParameterCloudProviderEnabledName(LRSOptionsCloudProvider cloudProvider) {
-		String cCloudProviderParamName = new String();
-		
-		if (cloudProvider == LRSOptionsCloudProvider.AWS) {
-			cCloudProviderParamName = "CloudAWSEnabled";
-		} else if (cloudProvider == LRSOptionsCloudProvider.AZURE)  {
-			cCloudProviderParamName = "CloudAzureEnabled";
-		} else if (cloudProvider == LRSOptionsCloudProvider.ORACLE)  {
-			cCloudProviderParamName = "CloudOracleEnabled";
-		} else {
-			cCloudProviderParamName = "";
-		}
-			
-		LRSParameter parameter = parameterRepository.findByname(cCloudProviderParamName);
-		
-		
-		return parameter;
-	}
-	
 	@RequestMapping(value = "LRSManager/configs/v1/setupdengineaddress", method = RequestMethod.POST)
     public ResponseEntity setenginepath(HttpServletRequest request, @RequestBody LRSUpdEnginePathForm formEnginePath) {
 		
-		String enginePathParamName = new String("ServicePath_LRSAgent");
-		String enginePortParamName = new String("ServicePort_LRSAgent");
+		String enginePathParamName = new String("ServicePath_LRSUploadEngine");
+		String enginePortParamName = new String("ServicePort_LRSUploadEngine");
 		LRSConfigServiceModelEng response = new LRSConfigServiceModelEng();
 		LRSParameter paramEngPath = new LRSParameter();
 		LRSParameter paramEngPort = new LRSParameter();
@@ -232,8 +212,8 @@ public class LRSServiceConfigs {
 	@RequestMapping(value = "LRSManager/configs/v1/getupdengineaddress", method = RequestMethod.GET)
     public ResponseEntity getenginepath(HttpServletRequest request) {
 		LRSUpdEnginePathForm enginePathDetails = new LRSUpdEnginePathForm();
-		String enginePathParamName = new String("ServicePath_LRSAgent");
-		String enginePortParamName = new String("ServicePort_LRSAgent");
+		String enginePathParamName = new String("ServicePath_LRSUploadEngine");
+		String enginePortParamName = new String("ServicePort_LRSUploadEngine");
 		LRSConfigServiceModelEng response = new LRSConfigServiceModelEng();
 		LRSParameter paramEngPath = new LRSParameter();
 		LRSParameter paramEngPort = new LRSParameter();
@@ -267,6 +247,24 @@ public class LRSServiceConfigs {
 		return ResponseEntity.status(finalHttpStatus).body(response);	
     }
 	
+	public LRSParameter getParameterCloudProviderEnabledName(LRSOptionsCloudProvider cloudProvider) {
+		String cCloudProviderParamName = new String();
+		
+		if (cloudProvider == LRSOptionsCloudProvider.AWS) {
+			cCloudProviderParamName = "CloudAWSEnabled";
+		} else if (cloudProvider == LRSOptionsCloudProvider.AZURE)  {
+			cCloudProviderParamName = "CloudAzureEnabled";
+		} else if (cloudProvider == LRSOptionsCloudProvider.ORACLE)  {
+			cCloudProviderParamName = "CloudOracleEnabled";
+		} else {
+			cCloudProviderParamName = "";
+		}
+			
+		LRSParameter parameter = parameterRepository.findByname(cCloudProviderParamName);
+		
+		
+		return parameter;
+	}
 	
 	private void setRespInfoInitialData(HttpServletRequest request) {
 		this.responseInfo.setRequestTime(java.time.LocalTime.now().toString().substring(0,12));

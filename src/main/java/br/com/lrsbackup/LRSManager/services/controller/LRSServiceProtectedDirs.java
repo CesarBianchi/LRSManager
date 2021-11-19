@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.lrsbackup.LRSManager.enums.LRSOptionsCloudProvider;
 import br.com.lrsbackup.LRSManager.persistence.controller.form.LRSParameterForm;
 import br.com.lrsbackup.LRSManager.persistence.controller.form.LRSProtectedDirForm;
-import br.com.lrsbackup.LRSManager.persistence.model.LRSOptionsCloudProvider;
 import br.com.lrsbackup.LRSManager.persistence.model.LRSParameter;
 import br.com.lrsbackup.LRSManager.persistence.model.LRSProtectedDir;
 import br.com.lrsbackup.LRSManager.persistence.repository.LRSParameterRepository;

@@ -6,6 +6,10 @@ public class LRSConsoleOut {
 
 	private Gson gson = new Gson();
 	
+	public LRSConsoleOut() {
+		super();
+	}
+
 	public LRSConsoleOut(String msg) {
 		printMsg(msg);
 	}

@@ -105,10 +105,10 @@ public class LRSServiceQueueFile {
 			aFiles = queueFileRepository.findByoriginalfullname(fullfilename);	
 			if (aFiles.size() > 0) {
 				finalHttpStatus = HttpStatus.OK;
-				messages.addMessage("Transaction Ok!");
+				messages.addMessage("Transaction Ok. File already exists in database!");
 			} else {
-				finalHttpStatus = HttpStatus.BAD_REQUEST;
-				messages.addMessage("Directory Not Found");
+				finalHttpStatus = HttpStatus.OK;
+				messages.addMessage("File Not Found");
 			}
 		}
 		

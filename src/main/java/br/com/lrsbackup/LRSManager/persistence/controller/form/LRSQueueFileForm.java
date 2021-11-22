@@ -8,6 +8,8 @@ import br.com.lrsbackup.LRSManager.persistence.model.LRSQueueFile;
 public class LRSQueueFileForm {
 
 	private String originalfullname = new String();
+	private Long size;
+	private LocalDateTime creationDateTime;
 	private String destinationFileName = new String();
 	private String cloudProvider = new String();
 	private String status;
@@ -72,6 +74,23 @@ public class LRSQueueFileForm {
 	public void setProcessedDate(LocalDateTime processedDate) {
 		this.processedDate = processedDate;
 	}
+	
+	public Long getSize() {
+		return size;
+	}
+
+	public void setSize(Long size) {
+		this.size = size;
+	}
+
+
+	public LocalDateTime getCreationDateTime() {
+		return creationDateTime;
+	}
+
+	public void setCreationDateTime(LocalDateTime creationDateTime) {
+		this.creationDateTime = creationDateTime;
+	}
 
 	public LRSQueueFile convertToNew() {
 		LRSQueueFile newFile = new LRSQueueFile();
@@ -79,6 +98,8 @@ public class LRSQueueFileForm {
 		newFile.setOriginalfullname(this.originalfullname);
 		newFile.setDestinationFileName(this.destinationFileName);
 		newFile.setCloudProvider(this.cloudProvider);
+		newFile.setCreationDateTime(this.creationDateTime);
+		newFile.setSize(this.size);
 		
 		newFile.setStatus(LRSOptionsFileStatus.READY_TO_UP.toString());
 		newFile.setPercentUploaded(0);

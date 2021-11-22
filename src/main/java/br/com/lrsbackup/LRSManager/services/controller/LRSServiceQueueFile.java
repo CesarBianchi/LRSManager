@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -256,6 +258,8 @@ public class LRSServiceQueueFile {
 
 	@RequestMapping(value ="LRSManager/queue/v1/inserttolist", method = RequestMethod.POST)
     public ResponseEntity insertNew(HttpServletRequest request, @RequestBody LRSQueueFileForm queueForm) {
+		boolean insert = false;
+		boolean update = false;
 		LRSResponseMessages messages = new LRSResponseMessages();	
 		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel();
 		List<LRSQueueFile> files = new ArrayList<>();
@@ -266,16 +270,47 @@ public class LRSServiceQueueFile {
 		//Check if the file already added before
 		LRSQueueFile fileExists =  queueFileRepository.findExists(queueForm.getCloudProvider(), queueForm.getOriginalfullname());	
 		
+		//Check if the file was changed after the first sent. If yes, re-sent.
+		if (fileExists == null) {
+			insert = true;
+		} else {
+			if (!(fileExists.getCreationDateTime().toString().equals(queueForm.getCreationDateTime().toString())) || !(fileExists.getSize() == queueForm.getSize())) {
+				
+				if (!(fileExists.getStatus().equals(LRSOptionsFileStatus.READY_TO_UP.toString()))) {
+					
+					if (!(fileExists.getStatus().equals(LRSOptionsFileStatus.CONVERTING_ARCHIEVE.toString()))) {
+					
+						insert = true;
+						update = true;
+					}	
+				}
+			}	
+		}	
 		
-		if (fileExists == null)  {
 		
-			//Insert new Parameter
-			LRSQueueFile newFile = queueForm.convertToNew();
-			queueFileRepository.save(newFile);
+		if (insert)  {
+			LRSQueueFile newFile = new LRSQueueFile();
+			
+			if (update) {
+				fileExists.setInsertedDate(LocalDateTime.now());
+				fileExists.setProcessedDate(fileExists.getInsertedDate());
+				fileExists.setStatus(LRSOptionsFileStatus.READY_TO_UP.toString());
+				fileExists.setSize(queueForm.getSize());
+				fileExists.setPercentUploaded(0);
+				fileExists.setCreationDateTime(queueForm.getCreationDateTime());
+				
+				newFile = fileExists;
+				queueFileRepository.saveAndFlush(fileExists);
+			} else {
+				//Insert new Parameter
+				newFile = queueForm.convertToNew();
+				queueFileRepository.save(newFile);	
+			}
+			
 			
 			//Create a Response
 			files.add(newFile);
-			messages.addMessage("File ".concat(newFile.getOriginalfullname()).concat(" successfully added to queue list. It will upload in '".concat(newFile.getCloudProvider()).concat("' public cloud ")));
+			messages.addMessage("THe file ".concat(newFile.getOriginalfullname()).concat(" successfully added to queue list. It will upload in '".concat(newFile.getCloudProvider()).concat("' public cloud soon as possible")));
 			finalHttpStatus = HttpStatus.OK;			
 		} else {	
 			//Just create a response using a stored parameter data

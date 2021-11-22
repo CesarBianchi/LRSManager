@@ -17,6 +17,8 @@ public class LRSQueueFile {
 	private long id;
 	
 	private String originalfullname = new String();
+	private long size;
+	private LocalDateTime creationDateTime;
 	private String destinationFileName = new String();
 	private String cloudProvider = new String();
 	private String status;
@@ -110,6 +112,22 @@ public class LRSQueueFile {
 
 	public void setProcessedDate(LocalDateTime processedDate) {
 		this.processedDate = processedDate;
+	}
+
+	public long getSize() {
+		return size;
+	}
+
+	public void setSize(long size) {
+		this.size = size;
+	}
+
+	public LocalDateTime getCreationDateTime() {
+		return creationDateTime;
+	}
+
+	public void setCreationDateTime(LocalDateTime creationDateTime) {
+		this.creationDateTime = creationDateTime;
 	}
 	
 	

@@ -101,6 +101,9 @@ public class LRSServiceCloudInventory {
 				Duration minimalHour = Duration.ofHours(12);
 				LocalDateTime minimalDateTime = LocalDateTime.now().minus(minimalHour);
 				
+				//PageRequest page1 = new PageRequest();
+				
+				
 				lastRequests = cloudInvReqRepository.findByLastRequest(cloudProvider,pendingStatus);
 				
 				if (lastRequests.size() > 0) {
@@ -179,7 +182,7 @@ public class LRSServiceCloudInventory {
 					(newStatus.trim().toUpperCase().equals(errorStatus))) {
 				
 					//Verify if request exists
-					updRequest = cloudInvReqRepository.findByprotocolID(protocolId.trim());
+					updRequest = cloudInvReqRepository.findByprotocolID(protocolId.trim()  );
 						
 					if (updRequest != null) {
 						//Verify if cloud provider param is the same of database record.

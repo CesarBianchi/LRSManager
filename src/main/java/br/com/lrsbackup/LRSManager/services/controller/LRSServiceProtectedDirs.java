@@ -21,6 +21,7 @@ import br.com.lrsbackup.LRSManager.persistence.repository.LRSParameterRepository
 import br.com.lrsbackup.LRSManager.persistence.repository.LRSProtectedDirRepository;
 import br.com.lrsbackup.LRSManager.services.model.LRSParameterServiceModel;
 import br.com.lrsbackup.LRSManager.services.model.LRSProtectedDirServiceModel;
+import br.com.lrsbackup.LRSManager.util.LRSActivePublicClouds;
 import br.com.lrsbackup.LRSManager.util.LRSApplicationVersion;
 import br.com.lrsbackup.LRSManager.util.LRSRequestConsoleOut;
 import br.com.lrsbackup.LRSManager.util.LRSRequestIDGenerator;
@@ -98,6 +99,7 @@ public class LRSServiceProtectedDirs {
     public ResponseEntity insertNew(HttpServletRequest request, @RequestBody LRSProtectedDirForm pDir) {
 		LRSResponseMessages messages = new LRSResponseMessages();	
 		LRSProtectedDirServiceModel response = new LRSProtectedDirServiceModel();
+		LRSActivePublicClouds publicClouds = new LRSActivePublicClouds();
 		List<LRSProtectedDir> dirs = new ArrayList<>();
 		boolean lOk = true;
 				
@@ -118,19 +120,19 @@ public class LRSServiceProtectedDirs {
 				messages.addMessage("The 'origin' Path field is mandatory. Please, check it and try again");
 				lOk = false;
 
-			} /*else if (this.awsCloudIsActive() && pDir.getPathaws().trim().isEmpty()) {
+			} else if (publicClouds.isAwsOn() && pDir.getPathaws().trim().isEmpty()) {
 				messages.addMessage("The AWS Cloud is Active in this environment, so 'pathaws' field is mandatory. Please, check it and try again");
 				lOk = false;
 
-			} else if (this.azureCloudIsActive() && pDir.getPathazure().trim().isEmpty()) {
+			} else if (publicClouds.isAzureOn() && pDir.getPathazure().trim().isEmpty()) {
 				messages.addMessage("The AZURE Cloud is Active in this environment, so 'pathazure' field is mandatory. Please, check it and try again");
 				lOk = false;
 
-			} else if (this.oracleCloudIsActive() && pDir.getPathoracle().trim().isEmpty()) {
+			} else if (publicClouds.isOracleOn() && pDir.getPathoracle().trim().isEmpty()) {
 				messages.addMessage("The ORACLE Cloud is Active in this environment, so 'pathoracle' field is mandatory. Please, check it and try again");
 				lOk = false;
 
-			}	*/	
+			}	
 				
 			if (!lOk) { 
 				finalHttpStatus = HttpStatus.BAD_REQUEST;
@@ -172,6 +174,7 @@ public class LRSServiceProtectedDirs {
     public ResponseEntity update(HttpServletRequest request, @RequestBody LRSProtectedDirForm pDir) {
 		LRSResponseMessages messages = new LRSResponseMessages();
 		LRSProtectedDirServiceModel response = new LRSProtectedDirServiceModel();
+		LRSActivePublicClouds publicClouds = new LRSActivePublicClouds();
 		List<LRSProtectedDir> dirs = new ArrayList<>();
 		boolean lOk = true;
 		
@@ -195,19 +198,19 @@ public class LRSServiceProtectedDirs {
 				messages.addMessage("The 'origin' Path field is mandatory. Please, check it and try again");
 				lOk = false;
 
-			} /*else if (this.awsCloudIsActive() && pDir.getPathaws().trim().isEmpty()) {
+			} else if (publicClouds.isAwsOn() && pDir.getPathaws().trim().isEmpty()) {
 				messages.addMessage("The AWS Cloud is Active in this environment, so 'pathaws' field is mandatory. Please, check it and try again");
 				lOk = false;
 
-			} else if (this.azureCloudIsActive() && pDir.getPathazure().trim().isEmpty()) {
+			} else if (publicClouds.isAzureOn() && pDir.getPathazure().trim().isEmpty()) {
 				messages.addMessage("The AZURE Cloud is Active in this environment, so 'pathazure' field is mandatory. Please, check it and try again");
 				lOk = false;
 
-			} else if (this.oracleCloudIsActive() && pDir.getPathoracle().trim().isEmpty()) {
+			} else if (publicClouds.isOracleOn() && pDir.getPathoracle().trim().isEmpty()) {
 				messages.addMessage("The ORACLE Cloud is Active in this environment, so 'pathoracle' field is mandatory. Please, check it and try again");
 				lOk = false;
 
-			}	*/	
+			}	
 				
 			if (!lOk) { 
 				finalHttpStatus = HttpStatus.BAD_REQUEST;
@@ -249,6 +252,7 @@ public class LRSServiceProtectedDirs {
     public ResponseEntity delete(HttpServletRequest request, @RequestBody LRSProtectedDirForm pDir) {
 		LRSResponseMessages messages = new LRSResponseMessages();
 		LRSProtectedDirServiceModel response = new LRSProtectedDirServiceModel();
+		LRSActivePublicClouds publicClouds = new LRSActivePublicClouds();
 		List<LRSProtectedDir> dirs = new ArrayList<>();
 		boolean lOk = true;
 		
@@ -272,19 +276,19 @@ public class LRSServiceProtectedDirs {
 				messages.addMessage("The 'origin' Path field is mandatory. Please, check it and try again");
 				lOk = false;
 
-			} /*else if (this.awsCloudIsActive() && pDir.getPathaws().trim().isEmpty()) {
+			} else if (publicClouds.isAwsOn() && pDir.getPathaws().trim().isEmpty()) {
 				messages.addMessage("The AWS Cloud is Active in this environment, so 'pathaws' field is mandatory. Please, check it and try again");
 				lOk = false;
 
-			} else if (this.azureCloudIsActive() && pDir.getPathazure().trim().isEmpty()) {
+			} else if (publicClouds.isAzureOn() && pDir.getPathazure().trim().isEmpty()) {
 				messages.addMessage("The AZURE Cloud is Active in this environment, so 'pathazure' field is mandatory. Please, check it and try again");
 				lOk = false;
 
-			} else if (this.oracleCloudIsActive() && pDir.getPathoracle().trim().isEmpty()) {
+			} else if (publicClouds.isOracleOn() && pDir.getPathoracle().trim().isEmpty()) {
 				messages.addMessage("The ORACLE Cloud is Active in this environment, so 'pathoracle' field is mandatory. Please, check it and try again");
 				lOk = false;
 
-			}	*/	
+			}	
 				
 			if (!lOk) { 
 				finalHttpStatus = HttpStatus.BAD_REQUEST;

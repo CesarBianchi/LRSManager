@@ -19,7 +19,11 @@ public class LRSConsoleOut {
 	}
 		
 	private void printMsg(String msg) {
-		System.out.println(java.time.LocalTime.now().toString().substring(0,12).concat(" [APP] ").concat(msg) );
+		try {
+			System.out.println(java.time.LocalTime.now().toString().substring(0,12).concat(" [APP] ").concat(msg) );
+		} catch(Exception e) {
+				
+		}	
 	}
 	
 }

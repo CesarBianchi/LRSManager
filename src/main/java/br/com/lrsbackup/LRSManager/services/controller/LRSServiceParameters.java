@@ -32,6 +32,7 @@ import br.com.lrsbackup.LRSManager.util.LRSRequestIDGenerator;
 @RestController
 public class LRSServiceParameters {
 
+	@Autowired
 	private LRSParameterRepository parameterRepository;
 	private LRSResponseInfo responseInfo = new LRSResponseInfo();
 	private LRSApplicationVersion appDetails = new LRSApplicationVersion();

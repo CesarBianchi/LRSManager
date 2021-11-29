@@ -53,9 +53,7 @@ public class LRSServiceProtectedDirs {
 	@RequestMapping(value = "LRSManager/protecteddirs/v1/getall", method = RequestMethod.GET)
 	public ResponseEntity getall(HttpServletRequest request) {
 		LRSResponseMessages messages = new LRSResponseMessages();
-		
-
-		
+				
 		setRespInfoInitialData(request);
 		
 		List<LRSProtectedDir> dirs = protectedDirRepository.findAll();	

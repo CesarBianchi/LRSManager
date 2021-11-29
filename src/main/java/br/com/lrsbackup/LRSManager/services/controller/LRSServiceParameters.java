@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +32,6 @@ import br.com.lrsbackup.LRSManager.util.LRSRequestIDGenerator;
 @RestController
 public class LRSServiceParameters {
 
-	@Autowired
 	private LRSParameterRepository parameterRepository;
 	private LRSResponseInfo responseInfo = new LRSResponseInfo();
 	private LRSApplicationVersion appDetails = new LRSApplicationVersion();

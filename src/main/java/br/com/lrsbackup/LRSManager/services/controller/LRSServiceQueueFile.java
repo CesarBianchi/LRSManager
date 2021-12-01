@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.lrsbackup.LRSManager.enums.LRSOptionsFileStatus;
 import br.com.lrsbackup.LRSManager.persistence.controller.form.LRSParameterForm;
@@ -23,13 +27,17 @@ import br.com.lrsbackup.LRSManager.persistence.controller.form.LRSQueueFileForm;
 import br.com.lrsbackup.LRSManager.persistence.model.LRSParameter;
 import br.com.lrsbackup.LRSManager.persistence.model.LRSQueueFile;
 import br.com.lrsbackup.LRSManager.persistence.repository.LRSQueueFileRepository;
+import br.com.lrsbackup.LRSManager.services.model.LRSConfigServiceModelEng;
 import br.com.lrsbackup.LRSManager.services.model.LRSParameterServiceModel;
+import br.com.lrsbackup.LRSManager.services.model.LRSProtectedDirServiceModel;
 import br.com.lrsbackup.LRSManager.services.model.LRSQueueFileServiceModel;
 import br.com.lrsbackup.LRSManager.util.LRSApplicationVersion;
 import br.com.lrsbackup.LRSManager.util.LRSRequestConsoleOut;
 import br.com.lrsbackup.LRSManager.util.LRSRequestIDGenerator;
 import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
 import br.com.lrsbackup.LRSManager.util.LRSResponseMessages;
+import br.com.lrsbackup.LRSUploadEngine.services.model.LRSUploadFileForm;
+import br.com.lrsbackup.LRSUploadEngine.services.model.LRSUploadFileServiceModel;
 
 
 @RestController	
@@ -41,7 +49,8 @@ public class LRSServiceQueueFile {
 	private LRSApplicationVersion appDetails = new LRSApplicationVersion();
 	private LRSRequestConsoleOut requestConsoleOut = new LRSRequestConsoleOut();
 	private HttpStatus finalHttpStatus;
-	
+	private String cBaseURILRSManager = new String("http://192.168.0.101:6001/LRSManager");
+	private String cBaseURILRSUploadEngine = new String("");
 	
 	public LRSServiceQueueFile() {
 		super();
@@ -403,6 +412,97 @@ public class LRSServiceQueueFile {
 		return ResponseEntity.status(finalHttpStatus).body(response);		
     }
 	
+	
+	@RequestMapping(value ="LRSManager/queue/v1/uploadpendings", method = RequestMethod.POST)
+    public ResponseEntity updatestatus(HttpServletRequest request) throws InterruptedException {
+		
+		LRSUploadFileServiceModel response = new LRSUploadFileServiceModel();
+		
+		//1* Verify if exists files pending to upload
+		RestTemplate restTemplate = new RestTemplate();
+		LRSQueueFileServiceModel filesPending = restTemplate.getForObject(cBaseURILRSManager.concat("/queue/v1/getreadytoup"), LRSQueueFileServiceModel.class);
+		
+		//2* Get the LRSUploadEngineAddress
+		LRSConfigServiceModelEng engineAdd = this.getUploadEngineAddress();
+		cBaseURILRSUploadEngine = engineAdd.getLRSUpdateEngineAddress().getFullAdress().concat("/LRSUploadEngine");
+		
+		
+		if (filesPending != null) {			
+			for (int nI = 0; nI < filesPending.directories.size(); nI++) {
+				
+				//3* Send the file to LRSUploadEngine
+				LRSUploadFileForm fileToUpload = this.getFileToUpload(filesPending.directories.get(nI));
+				
+				try {
+					response = restTemplate.postForObject(cBaseURILRSUploadEngine.concat("/upload/v1/uploadfile"), fileToUpload, LRSUploadFileServiceModel.class);
+					finalHttpStatus = HttpStatus.OK;
+					
+					//4* Change the status to UPLOADING
+					this.changeFileStatusToUploading(fileToUpload);
+					
+					
+					Thread.sleep(120000);
+				} catch (HttpClientErrorException | HttpServerErrorException httpClientOrServerExc) {
+					
+					finalHttpStatus = httpClientOrServerExc.getStatusCode();
+				    if(HttpStatus.BAD_REQUEST.equals(httpClientOrServerExc.getStatusCode())) {
+				    	//TODO TODO
+				    }
+				    else {
+				      //TODO TODO TODO
+				    }
+				}
+			}
+		}
+		
+		//TODO TODO TODO - DONT RESPONSE TO AGENT THE SAME RESPONSE OF ENGINEUPLOAD - SECURITY REASONS! SOME DAY I'LL CHANGE IT!
+		setRespInfoFootData(finalHttpStatus);
+		requestConsoleOut.println(request,response);
+			
+		
+		return ResponseEntity.status(finalHttpStatus).body(response);	
+		
+    }
+
+	private void changeFileStatusToUploading(LRSUploadFileForm fileToUpload) {
+		
+		LRSQueueFileForm fileFormUploading = new LRSQueueFileForm();
+		fileFormUploading.setCloudProvider(fileToUpload.getPublicCloud());
+		fileFormUploading.setOriginalfullname(fileToUpload.getOriginalFileName());
+		fileFormUploading.setStatus(LRSOptionsFileStatus.UPLOADING.toString());
+		
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.postForObject(cBaseURILRSManager.concat("/queue/v1/updatestatus"), fileFormUploading, LRSQueueFileServiceModel.class);
+		
+	}
+
+	private LRSUploadFileForm getFileToUpload(LRSQueueFile lrsQueueFile) {
+		
+		LRSUploadFileForm fileToUp = new LRSUploadFileForm();
+		fileToUp.setDestinationFileName(lrsQueueFile.getDestinationFileName());
+		fileToUp.setOriginalFileName(lrsQueueFile.getOriginalfullname());
+		fileToUp.setPublicCloud(lrsQueueFile.getCloudProvider());
+		
+		RestTemplate restTemplate = new RestTemplate();
+		String url = cBaseURILRSManager.concat("/configs/v1/getcloudcredentials");
+		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url).queryParam("cloudProviderName",lrsQueueFile.getCloudProvider() );
+		LRSParameterServiceModel cloudCredentials = restTemplate.getForObject(builder.toUriString(), LRSParameterServiceModel.class);
+		
+		
+		//TODO TODO TODO - IMPLEMENT DECRYPT MODE
+		fileToUp.setCspUserName(cloudCredentials.parameters.get(0).getValue());
+		fileToUp.setCspUserKey(cloudCredentials.parameters.get(1).getValue());
+		
+		return fileToUp;
+	}
+
+	private LRSConfigServiceModelEng getUploadEngineAddress() {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		LRSConfigServiceModelEng uploadEngineAdd = restTemplate.getForObject(cBaseURILRSManager.concat("/configs/v1/getupdengineaddress"), LRSConfigServiceModelEng.class);
+		
+		return uploadEngineAdd;
+	}
 	
 	
 }

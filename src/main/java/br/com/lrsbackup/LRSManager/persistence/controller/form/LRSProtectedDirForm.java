@@ -83,7 +83,7 @@ public class LRSProtectedDirForm {
 			LRSProtDir.setContent(this.description);
 			LRSProtDir.setOriginPath(this.originalPath.trim());
 			LRSProtDir.setDestinationPath_AWS(this.pathaws.trim());
-			LRSProtDir.setDestinationPath_Azure(this.pathaws.trim());
+			LRSProtDir.setDestinationPath_Azure(this.pathazure.trim());
 			LRSProtDir.setDestinationPath_Oracle(this.pathoracle.trim());
 			LRSProtDir.setCreatedDate(LocalDateTime.now());
 			

@@ -1,1 +1,1 @@
-Main-Class: br.com.lrsbackup.LRSManager.LRSManagerApplication
+Main-Class: br.com.lrsbackup.LRSManager.LRSManager

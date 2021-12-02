@@ -49,7 +49,7 @@ public class LRSServiceQueueFile {
 	private LRSApplicationVersion appDetails = new LRSApplicationVersion();
 	private LRSRequestConsoleOut requestConsoleOut = new LRSRequestConsoleOut();
 	private HttpStatus finalHttpStatus;
-	private String cBaseURILRSManager = new String("http://192.168.0.101:6001/LRSManager");
+	private String cBaseURILRSManager = new String("http://127.0.0.1:6001/LRSManager");
 	private String cBaseURILRSUploadEngine = new String("");
 	
 	public LRSServiceQueueFile() {
@@ -413,8 +413,11 @@ public class LRSServiceQueueFile {
     }
 	
 	
-	@RequestMapping(value ="LRSManager/queue/v1/uploadpendings", method = RequestMethod.POST)
-    public ResponseEntity updatestatus(HttpServletRequest request) throws InterruptedException {
+	@RequestMapping(value ="LRSManager/queue/v1/uploadpendings", method = RequestMethod.GET)
+    public ResponseEntity uploadpendings(HttpServletRequest request,String caller)  {
+		
+		setRespInfoInitialData(request);
+		requestConsoleOut.println(request,caller);
 		
 		LRSUploadFileServiceModel response = new LRSUploadFileServiceModel();
 		
@@ -426,6 +429,7 @@ public class LRSServiceQueueFile {
 		LRSConfigServiceModelEng engineAdd = this.getUploadEngineAddress();
 		cBaseURILRSUploadEngine = engineAdd.getLRSUpdateEngineAddress().getFullAdress().concat("/LRSUploadEngine");
 		
+		/*
 		
 		if (filesPending != null) {			
 			for (int nI = 0; nI < filesPending.directories.size(); nI++) {
@@ -451,9 +455,13 @@ public class LRSServiceQueueFile {
 				    else {
 				      //TODO TODO TODO
 				    }
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
+		*/
 		
 		//TODO TODO TODO - DONT RESPONSE TO AGENT THE SAME RESPONSE OF ENGINEUPLOAD - SECURITY REASONS! SOME DAY I'LL CHANGE IT!
 		setRespInfoFootData(finalHttpStatus);

@@ -10,8 +10,8 @@
 		<relativePath/>
 	</parent>
 	
-	<groupId>br.com.lrsmanager</groupId>
-	<artifactId>LRSBackup</artifactId>
+	<groupId>br.com.lrsbackup</groupId>
+	<artifactId>LRSManager</artifactId>
 	<version>1.0.0</version>
 	<name>LRSManager</name>
 	<description>LRSBackup Manager module</description>

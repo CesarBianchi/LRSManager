@@ -6,5 +6,5 @@ public enum LRSOptionsFileStatus {
 	UPLOADED_STANDARD,
 	CONVERTING_ARCHIEVE,
 	DONE,
-	ERROR;
+	ERROR; 
 }

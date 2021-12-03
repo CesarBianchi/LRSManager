@@ -7,37 +7,30 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.lrsbackup.LRSManager.enums.LRSOptionsFileStatus;
-import br.com.lrsbackup.LRSManager.persistence.controller.form.LRSParameterForm;
 import br.com.lrsbackup.LRSManager.persistence.controller.form.LRSQueueFileFilterOptions;
 import br.com.lrsbackup.LRSManager.persistence.controller.form.LRSQueueFileForm;
-import br.com.lrsbackup.LRSManager.persistence.model.LRSParameter;
 import br.com.lrsbackup.LRSManager.persistence.model.LRSQueueFile;
 import br.com.lrsbackup.LRSManager.persistence.repository.LRSQueueFileRepository;
 import br.com.lrsbackup.LRSManager.services.model.LRSConfigServiceModelEng;
 import br.com.lrsbackup.LRSManager.services.model.LRSParameterServiceModel;
-import br.com.lrsbackup.LRSManager.services.model.LRSProtectedDirServiceModel;
 import br.com.lrsbackup.LRSManager.services.model.LRSQueueFileServiceModel;
 import br.com.lrsbackup.LRSManager.util.LRSApplicationVersion;
 import br.com.lrsbackup.LRSManager.util.LRSRequestConsoleOut;
 import br.com.lrsbackup.LRSManager.util.LRSRequestIDGenerator;
 import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
 import br.com.lrsbackup.LRSManager.util.LRSResponseMessages;
-import br.com.lrsbackup.LRSUploadEngine.services.model.LRSUploadFileForm;
-import br.com.lrsbackup.LRSUploadEngine.services.model.LRSUploadFileServiceModel;
+import br.com.lrsbackup.LRSManager.services.model.LRSUploadFileForm;
+import br.com.lrsbackup.LRSManager.services.model.LRSUploadFileServiceModel;
 
 
 @RestController	

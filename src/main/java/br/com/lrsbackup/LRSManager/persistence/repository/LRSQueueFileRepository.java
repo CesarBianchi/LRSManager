@@ -26,6 +26,5 @@ public interface LRSQueueFileRepository extends JpaRepository<LRSQueueFile, Long
 
 	List<LRSQueueFile> findByid(Long id);
 
-	
 
 }

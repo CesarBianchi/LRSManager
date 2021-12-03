@@ -11,3 +11,4 @@ public interface LRSParameterRepository extends JpaRepository<LRSParameter, Long
 
 	LRSParameter findByid(Long id);
 }
+ 

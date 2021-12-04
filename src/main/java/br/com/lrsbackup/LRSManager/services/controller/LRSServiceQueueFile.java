@@ -409,7 +409,38 @@ public class LRSServiceQueueFile {
     }
 	
 	@RequestMapping(value ="LRSManager/queue/v1/uploadpendings", method = RequestMethod.GET)
-    public ResponseEntity uploadpendings(String caller, HttpServletRequest request)  {
+    public ResponseEntity uploadpendings(String caller, HttpServletRequest request) throws InterruptedException  {
+		LRSUploadFileServiceModel response = new LRSUploadFileServiceModel();
+		
+		setRespInfoInitialData(request);
+		requestConsoleOut.println(request,caller);
+			
+		this.newUploadFileThread(caller, request);
+		
+		finalHttpStatus = HttpStatus.OK;
+		setRespInfoFootData(finalHttpStatus);
+		requestConsoleOut.println(request,response);
+			
+		
+		return ResponseEntity.status(finalHttpStatus).body(response);	
+		
+    }
+
+	public void newUploadFileThread(String caller, HttpServletRequest request) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+            	try {
+            		startUploadProcess(caller,request);
+				} catch (InterruptedException e) {
+					//e.printStackTrace();
+				}
+            }
+        }).start();
+	}
+	
+	
+	public void startUploadProcess(String caller, HttpServletRequest request) throws InterruptedException  {
 		LRSUploadFileServiceModel response = new LRSUploadFileServiceModel();
 		
 		
@@ -461,10 +492,13 @@ public class LRSServiceQueueFile {
 		requestConsoleOut.println(request,response);
 			
 		
-		return ResponseEntity.status(finalHttpStatus).body(response);	
+		return;	
 		
     }
-
+	
+	
+	
+	
 	private void changeFileStatusToUploading(LRSUploadFileForm fileToUpload) {
 		
 		LRSQueueFileForm fileFormUploading = new LRSQueueFileForm();

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -25,6 +27,7 @@ import br.com.lrsbackup.LRSManager.services.model.LRSConfigServiceModelEng;
 import br.com.lrsbackup.LRSManager.services.model.LRSParameterServiceModel;
 import br.com.lrsbackup.LRSManager.services.model.LRSQueueFileServiceModel;
 import br.com.lrsbackup.LRSManager.util.LRSApplicationVersion;
+import br.com.lrsbackup.LRSManager.util.LRSManagerAddress;
 import br.com.lrsbackup.LRSManager.util.LRSRequestConsoleOut;
 import br.com.lrsbackup.LRSManager.util.LRSRequestIDGenerator;
 import br.com.lrsbackup.LRSManager.util.LRSResponseInfo;
@@ -42,7 +45,7 @@ public class LRSServiceQueueFile {
 	private LRSApplicationVersion appDetails = new LRSApplicationVersion();
 	private LRSRequestConsoleOut requestConsoleOut = new LRSRequestConsoleOut();
 	private HttpStatus finalHttpStatus;
-	private String cBaseURILRSManager = new String("http://127.0.0.1:6001/LRSManager");
+	private String cBaseURILRSManager = new LRSManagerAddress().getLRSManagerURI();
 	private String cBaseURILRSUploadEngine = new String("");
 	
 	public LRSServiceQueueFile() {
@@ -367,7 +370,7 @@ public class LRSServiceQueueFile {
 		return ResponseEntity.status(finalHttpStatus).body(response);		
     }
 	
-	@RequestMapping(value ="LRSManager/queue/v1/updatestatus", method = RequestMethod.PUT)
+	@RequestMapping(value ="LRSManager/queue/v1/updatestatus", method = RequestMethod.POST)
     public ResponseEntity updatestatus(HttpServletRequest request, @RequestBody LRSQueueFileForm queueForm) {
 		LRSResponseMessages messages = new LRSResponseMessages();	
 		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel();
@@ -405,15 +408,14 @@ public class LRSServiceQueueFile {
 		return ResponseEntity.status(finalHttpStatus).body(response);		
     }
 	
-	
 	@RequestMapping(value ="LRSManager/queue/v1/uploadpendings", method = RequestMethod.GET)
-    public ResponseEntity uploadpendings(HttpServletRequest request,String caller)  {
+    public ResponseEntity uploadpendings(String caller, HttpServletRequest request)  {
+		LRSUploadFileServiceModel response = new LRSUploadFileServiceModel();
+		
 		
 		setRespInfoInitialData(request);
 		requestConsoleOut.println(request,caller);
-		
-		LRSUploadFileServiceModel response = new LRSUploadFileServiceModel();
-		
+			
 		//1* Verify if exists files pending to upload
 		RestTemplate restTemplate = new RestTemplate();
 		LRSQueueFileServiceModel filesPending = restTemplate.getForObject(cBaseURILRSManager.concat("/queue/v1/getreadytoup"), LRSQueueFileServiceModel.class);
@@ -422,7 +424,6 @@ public class LRSServiceQueueFile {
 		LRSConfigServiceModelEng engineAdd = this.getUploadEngineAddress();
 		cBaseURILRSUploadEngine = engineAdd.getLRSUpdateEngineAddress().getFullAdress().concat("/LRSUploadEngine");
 		
-		/*
 		
 		if (filesPending != null) {			
 			for (int nI = 0; nI < filesPending.directories.size(); nI++) {
@@ -454,7 +455,6 @@ public class LRSServiceQueueFile {
 				}
 			}
 		}
-		*/
 		
 		//TODO TODO TODO - DONT RESPONSE TO AGENT THE SAME RESPONSE OF ENGINEUPLOAD - SECURITY REASONS! SOME DAY I'LL CHANGE IT!
 		setRespInfoFootData(finalHttpStatus);
@@ -487,6 +487,7 @@ public class LRSServiceQueueFile {
 		RestTemplate restTemplate = new RestTemplate();
 		String url = cBaseURILRSManager.concat("/configs/v1/getcloudcredentials");
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url).queryParam("cloudProviderName",lrsQueueFile.getCloudProvider() );
+		
 		LRSParameterServiceModel cloudCredentials = restTemplate.getForObject(builder.toUriString(), LRSParameterServiceModel.class);
 		
 		

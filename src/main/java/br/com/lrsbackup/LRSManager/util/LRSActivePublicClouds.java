@@ -8,10 +8,10 @@ public class LRSActivePublicClouds {
 	private boolean awsIsOn = false;
 	private boolean azureIsOn = false;
 	private boolean oracleIsOn = false;
-	private String cBaseURI = new String("http://192.168.0.101:6001/LRSManager"); // TO DO - PATH IS NOT HARD-CODDED
+	private String cBaseURI = new LRSManagerAddress().getLRSManagerURI();
 	
 	public LRSActivePublicClouds() {
-		super();
+		//super();
 		
 		RestTemplate restTemplate = new RestTemplate();
 		LRSConfigServiceModel awsIsOn = restTemplate.getForObject(cBaseURI.concat("/configs/v1/awsisenabled"), LRSConfigServiceModel.class); 
@@ -38,7 +38,6 @@ public class LRSActivePublicClouds {
 	public String getcBaseURI() {
 		return cBaseURI;
 	}
-	
 	
 	
 }

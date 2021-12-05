@@ -37,7 +37,7 @@ public class LRSActivePublicClouds {
 
 	public String getcBaseURI() {
 		return cBaseURI;
-	}
+	} 
 	
 	
 }

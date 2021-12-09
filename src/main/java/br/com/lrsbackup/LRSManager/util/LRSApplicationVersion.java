@@ -6,9 +6,6 @@ public class LRSApplicationVersion {
 	private String serviceName = new String();
 	private String serviceVersion = new String();
 	
-	
-	
-	
 	public LRSApplicationVersion() {
 		super();
 		this.applicationName = "LRSBackup";
@@ -16,7 +13,7 @@ public class LRSApplicationVersion {
 		this.serviceVersion = "v1.00.00.0";
 		
 	}
-
+ 
 
 	public String getApplicationName() {
 		return applicationName;

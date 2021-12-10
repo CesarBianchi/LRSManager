@@ -1,5 +1,9 @@
 package br.com.lrsbackup.LRSManager.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 public class LRSOperationalSystem {
 		 
     private static String OS = System.getProperty("os.name").toLowerCase();
@@ -50,6 +54,51 @@ public class LRSOperationalSystem {
         } else {
             return "err";
         }
+    }
+    
+	private String getOnlyFileName(String originalFileName) {
+		String delimiter = new String();
+		String onlyFileName = new String();
+		LRSOperationalSystem mySO = new LRSOperationalSystem();
+		
+		if (mySO.isWindows()) {
+			delimiter = "\\";
+		} else {
+			delimiter = "/";
+		}
+		
+		int initialPoint = originalFileName.lastIndexOf(delimiter);
+		int finalPoint = originalFileName.length();
+		
+		onlyFileName = originalFileName.substring(initialPoint,finalPoint);	
+		onlyFileName = onlyFileName.replace(delimiter,"");
+		
+		return onlyFileName;
+	}
+	
+	public byte[] getObjectFile(String filePath) {
+
+        FileInputStream fileInputStream = null;
+        byte[] bytesArray = null;
+
+        try {
+            File file = new File(filePath);
+            bytesArray = new byte[(int) file.length()];
+            fileInputStream = new FileInputStream(file);
+            fileInputStream.read(bytesArray);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return bytesArray;
     }
 	
 }

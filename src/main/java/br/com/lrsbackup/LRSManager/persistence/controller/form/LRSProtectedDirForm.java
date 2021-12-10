@@ -9,6 +9,7 @@ public class LRSProtectedDirForm {
 		private String name = new String();
 		private String description = new String();
 		private String originalPath = new String();
+		private String storageRepoName = new String();
 		private String pathaws = new String();
 		private String pathazure = new String();
 		private String pathoracle = new String();
@@ -19,13 +20,14 @@ public class LRSProtectedDirForm {
 		}
 
 		public LRSProtectedDirForm(String name, String description, String originalPath, String pathaws,
-				String pathazure, String pathoracle) {
+				String pathazure, String pathoracle, String storageName) {
 			this.name = name;
 			this.description = description;
 			this.originalPath = originalPath;
 			this.pathaws = pathaws;
 			this.pathazure = pathazure;
 			this.pathoracle = pathoracle;
+			this.storageRepoName = storageName;
 		}
 
 		public String getOriginalPath() {
@@ -75,6 +77,14 @@ public class LRSProtectedDirForm {
 		public void setDescription(String description) {
 			this.description = description;
 		}
+		
+		public String getStorageRepoName() {
+			return storageRepoName;
+		}
+
+		public void setStorageRepoName(String storageRepoName) {
+			this.storageRepoName = storageRepoName;
+		}
 
 		public LRSProtectedDir convertToProtectedDir() {
 			LRSProtectedDir LRSProtDir = new LRSProtectedDir();
@@ -85,6 +95,7 @@ public class LRSProtectedDirForm {
 			LRSProtDir.setDestinationPath_AWS(this.pathaws.trim());
 			LRSProtDir.setDestinationPath_Azure(this.pathazure.trim());
 			LRSProtDir.setDestinationPath_Oracle(this.pathoracle.trim());
+			LRSProtDir.setStorageRepositoryName(this.storageRepoName.trim());
 			LRSProtDir.setCreatedDate(LocalDateTime.now());
 			
 			return LRSProtDir;

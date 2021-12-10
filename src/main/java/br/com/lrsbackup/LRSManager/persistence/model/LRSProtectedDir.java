@@ -16,6 +16,7 @@ public class LRSProtectedDir {
 	private String name = new String();
 	private String content = new String();
 	private String dirname = new String();
+	private String storageRepositoryName = new String();
 	private String destinationPath_AWS = new String();
 	private String destinationPath_Azure = new String();
 	private String destinationPath_Oracle = new String();
@@ -29,7 +30,7 @@ public class LRSProtectedDir {
 	
 
 	public LRSProtectedDir(long id, String name, String content, String dirname, String destinationPath_AWS,
-			String destinationPath_Azure, String destinationPath_Oracle) {
+			String destinationPath_Azure, String destinationPath_Oracle, String storageName) {
 		this.id = id;
 		this.name = name;
 		this.content = content;
@@ -37,6 +38,7 @@ public class LRSProtectedDir {
 		this.destinationPath_AWS = destinationPath_AWS;
 		this.destinationPath_Azure = destinationPath_Azure;
 		this.destinationPath_Oracle = destinationPath_Oracle;
+		this.storageRepositoryName = storageName;
 		this.createdDate = LocalDateTime.now();
 	}
 
@@ -80,52 +82,44 @@ public class LRSProtectedDir {
 		this.destinationPath_Oracle = destinationPath_Oracle;
 	}
 
-
-
 	public String getName() {
 		return name;
 	}
-
-
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
-
 	public String getContent() {
 		return content;
 	}
-
-
 
 	public void setContent(String content) {
 		this.content = content;
 	}
 
-
-
 	public String getDirname() {
 		return dirname;
 	}
-
-
 
 	public void setDirname(String dirname) {
 		this.dirname = dirname;
 	}
 
-
-
 	public LocalDateTime getCreatedDate() {
 		return createdDate;
 	}
 
-
-
 	public void setCreatedDate(LocalDateTime createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public String getStorageRepositoryName() {
+		return storageRepositoryName;
+	}
+
+	public void setStorageRepositoryName(String storageRepositoryName) {
+		this.storageRepositoryName = storageRepositoryName;
 	}
 	
 	

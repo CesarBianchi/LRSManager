@@ -467,7 +467,7 @@ public class LRSServiceQueueFile {
 					finalHttpStatus = HttpStatus.OK;
 					
 					//4* Change the status to UPLOADING
-					this.changeFileStatusToUploading(fileToUpload);
+					//this.changeFileStatusToUploading(fileToUpload);
 					
 					
 					Thread.sleep(120000);

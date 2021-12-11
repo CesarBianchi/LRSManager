@@ -483,8 +483,7 @@ public class LRSServiceQueueFile {
 				try {
 					response = restTemplate.postForObject(cBaseURILRSUploadEngine.concat("/upload/v1/uploadfile"), fileToUpload, LRSUploadFileServiceModel.class);
 					finalHttpStatus = HttpStatus.OK;
-					
-					Thread.sleep(120000);
+
 				} catch (HttpClientErrorException | HttpServerErrorException httpClientOrServerExc) {
 					
 					finalHttpStatus = httpClientOrServerExc.getStatusCode();
@@ -494,10 +493,9 @@ public class LRSServiceQueueFile {
 				    else {
 				      //TODO TODO TODO
 				    }
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+				
+				Thread.sleep(120000);
 			}
 		}
 		

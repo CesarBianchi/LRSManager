@@ -21,6 +21,7 @@ public class LRSQueueFile {
 	private LocalDateTime creationDateTime;
 	private String destinationFileName = new String();
 	private String cloudProvider = new String();
+	private String storageRepoName = new String();
 	private String status;
 	private int percentUploaded;
 	private int tentatives;
@@ -128,6 +129,14 @@ public class LRSQueueFile {
 
 	public void setCreationDateTime(LocalDateTime creationDateTime) {
 		this.creationDateTime = creationDateTime;
+	}
+
+	public String getStorageRepoName() {
+		return storageRepoName;
+	}
+
+	public void setStorageRepoName(String storageRepoName) {
+		this.storageRepoName = storageRepoName;
 	}
 	
 	

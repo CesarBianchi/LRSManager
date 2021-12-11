@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -134,6 +135,23 @@ public class LRSServiceQueueFile {
 		setRespInfoInitialData(request);
 		
 		List<LRSQueueFile> aFiles = queueFileRepository.findByStatus(LRSOptionsFileStatus.READY_TO_UP.toString());	
+		
+		finalHttpStatus = HttpStatus.OK;
+		setRespInfoFootData(finalHttpStatus);
+		
+		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel(responseInfo,aFiles,messages);
+		requestConsoleOut.println(request,response);
+		
+		return ResponseEntity.status(finalHttpStatus).body(response);	
+	}
+	
+	@RequestMapping(value = "LRSManager/queue/v1/getsomereadytoup", method = RequestMethod.GET)
+	public ResponseEntity getsomeready(HttpServletRequest request) {
+		LRSResponseMessages messages = new LRSResponseMessages();			
+		
+		setRespInfoInitialData(request);
+		
+		List<LRSQueueFile> aFiles = queueFileRepository.queryFirst100findByStatus(LRSOptionsFileStatus.READY_TO_UP.toString());	
 		
 		finalHttpStatus = HttpStatus.OK;
 		setRespInfoFootData(finalHttpStatus);
@@ -449,7 +467,7 @@ public class LRSServiceQueueFile {
 			
 		//1* Verify if exists files pending to upload
 		RestTemplate restTemplate = new RestTemplate();
-		LRSQueueFileServiceModel filesPending = restTemplate.getForObject(cBaseURILRSManager.concat("/queue/v1/getreadytoup"), LRSQueueFileServiceModel.class);
+		LRSQueueFileServiceModel filesPending = restTemplate.getForObject(cBaseURILRSManager.concat("/queue/v1/getsomereadytoup"), LRSQueueFileServiceModel.class);
 		
 		//2* Get the LRSUploadEngineAddress
 		LRSConfigServiceModelEng engineAdd = this.getUploadEngineAddress();
@@ -465,10 +483,6 @@ public class LRSServiceQueueFile {
 				try {
 					response = restTemplate.postForObject(cBaseURILRSUploadEngine.concat("/upload/v1/uploadfile"), fileToUpload, LRSUploadFileServiceModel.class);
 					finalHttpStatus = HttpStatus.OK;
-					
-					//4* Change the status to UPLOADING
-					//this.changeFileStatusToUploading(fileToUpload);
-					
 					
 					Thread.sleep(120000);
 				} catch (HttpClientErrorException | HttpServerErrorException httpClientOrServerExc) {
@@ -499,17 +513,7 @@ public class LRSServiceQueueFile {
 	
 	
 	
-	private void changeFileStatusToUploading(LRSUploadFileForm fileToUpload) {
-		
-		LRSQueueFileForm fileFormUploading = new LRSQueueFileForm();
-		fileFormUploading.setCloudProvider(fileToUpload.getPublicCloud());
-		fileFormUploading.setOriginalfullname(fileToUpload.getOriginalFileName());
-		fileFormUploading.setStatus(LRSOptionsFileStatus.UPLOADING.toString());
-		
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.postForObject(cBaseURILRSManager.concat("/queue/v1/updatestatus"), fileFormUploading, LRSQueueFileServiceModel.class);
-		
-	}
+
 
 	private LRSUploadFileForm getFileToUpload(LRSQueueFile lrsQueueFile) {
 		
@@ -517,6 +521,7 @@ public class LRSServiceQueueFile {
 		fileToUp.setDestinationFileName(lrsQueueFile.getDestinationFileName());
 		fileToUp.setOriginalFileName(lrsQueueFile.getOriginalfullname());
 		fileToUp.setPublicCloud(lrsQueueFile.getCloudProvider());
+		fileToUp.setStorageRepoName(lrsQueueFile.getStorageRepoName());
 		
 		RestTemplate restTemplate = new RestTemplate();
 		String url = cBaseURILRSManager.concat("/configs/v1/getcloudcredentials");

@@ -9,21 +9,7 @@ public class LRSOperationalSystem {
     private static String OS = System.getProperty("os.name").toLowerCase();
  
     public LRSOperationalSystem() {
-    	/*
-        System.out.println(OS);
- 
-        if (isWindows()) {
-            System.out.println("This is Windows");
-        } else if (isMac()) {
-            System.out.println("This is MacOS");
-        } else if (isUnix()) {
-            System.out.println("This is Unix or Linux");
-        } else if (isSolaris()) {
-            System.out.println("This is Solaris");
-        } else {
-            System.out.println("Your OS is not supported!!");
-        }
-        */
+
     }
  
     public static boolean isWindows() {
@@ -57,15 +43,10 @@ public class LRSOperationalSystem {
     }
     
 	private String getOnlyFileName(String originalFileName) {
-		String delimiter = new String();
+		String delimiter = this.getFilePathSeparator();
 		String onlyFileName = new String();
 		LRSOperationalSystem mySO = new LRSOperationalSystem();
 		
-		if (mySO.isWindows()) {
-			delimiter = "\\";
-		} else {
-			delimiter = "/";
-		}
 		
 		int initialPoint = originalFileName.lastIndexOf(delimiter);
 		int finalPoint = originalFileName.length();
@@ -100,5 +81,17 @@ public class LRSOperationalSystem {
         }
         return bytesArray;
     }
+	
+	public String getFilePathSeparator() {
+		String delimiter = new String();
+		
+		if (this.isWindows()) {
+			delimiter = "\\";
+		} else {
+			delimiter = "/";
+		}
+		
+		return delimiter;
+	}
 	
 }

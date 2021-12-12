@@ -20,7 +20,10 @@ public class LRSProtectedDir {
 	private String destinationPath_AWS = new String();
 	private String destinationPath_Azure = new String();
 	private String destinationPath_Oracle = new String();
-	private LocalDateTime createdDate = LocalDateTime.now();
+	private String URIPath_AWS = new String();
+	private String URIPath_Azure = new String();
+	private String URIPath_Oracle = new String();
+		private LocalDateTime createdDate = LocalDateTime.now();
 	
 	public LRSProtectedDir() {
 		super();
@@ -30,7 +33,8 @@ public class LRSProtectedDir {
 	
 
 	public LRSProtectedDir(long id, String name, String content, String dirname, String destinationPath_AWS,
-			String destinationPath_Azure, String destinationPath_Oracle, String storageName) {
+			String destinationPath_Azure, String destinationPath_Oracle, String storageName,
+			String URIAWS, String URIAzure, String URIOracle) {
 		this.id = id;
 		this.name = name;
 		this.content = content;
@@ -39,6 +43,9 @@ public class LRSProtectedDir {
 		this.destinationPath_Azure = destinationPath_Azure;
 		this.destinationPath_Oracle = destinationPath_Oracle;
 		this.storageRepositoryName = storageName;
+		this.URIPath_AWS = URIAWS;
+		this.URIPath_Azure = URIAzure;
+		this.URIPath_Oracle = URIOracle;
 		this.createdDate = LocalDateTime.now();
 	}
 
@@ -120,6 +127,42 @@ public class LRSProtectedDir {
 
 	public void setStorageRepositoryName(String storageRepositoryName) {
 		this.storageRepositoryName = storageRepositoryName;
+	}
+
+
+
+	public String getURIPath_AWS() {
+		return URIPath_AWS;
+	}
+
+
+
+	public void setURIPath_AWS(String uRIPath_AWS) {
+		URIPath_AWS = uRIPath_AWS;
+	}
+
+
+
+	public String getURIPath_Azure() {
+		return URIPath_Azure;
+	}
+
+
+
+	public void setURIPath_Azure(String uRIPath_Azure) {
+		URIPath_Azure = uRIPath_Azure;
+	}
+
+
+
+	public String getURIPath_Oracle() {
+		return URIPath_Oracle;
+	}
+
+
+
+	public void setURIPath_Oracle(String uRIPath_Oracle) {
+		URIPath_Oracle = uRIPath_Oracle;
 	}
 	
 	

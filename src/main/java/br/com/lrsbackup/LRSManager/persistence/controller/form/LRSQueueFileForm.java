@@ -14,12 +14,11 @@ public class LRSQueueFileForm {
 	private String cloudProvider = new String();
 	private String status;
 	private String storageRepoName = new String();
+	private String storageURI = new String();
 	private int percentUploaded;
 	private int tentatives;
 	private LocalDateTime insertedDate = LocalDateTime.now();
 	private LocalDateTime processedDate = LocalDateTime.now();
-	
-	
 	
 	public LRSQueueFileForm() {
 		super();
@@ -84,7 +83,6 @@ public class LRSQueueFileForm {
 		this.size = size;
 	}
 
-
 	public LocalDateTime getCreationDateTime() {
 		return creationDateTime;
 	}
@@ -92,8 +90,6 @@ public class LRSQueueFileForm {
 	public void setCreationDateTime(LocalDateTime creationDateTime) {
 		this.creationDateTime = creationDateTime;
 	}
-
-	
 	
 	public String getStorageRepoName() {
 		return storageRepoName;
@@ -101,6 +97,14 @@ public class LRSQueueFileForm {
 
 	public void setStorageRepoName(String storageRepoName) {
 		this.storageRepoName = storageRepoName;
+	}
+	
+	public String getStorageURI() {
+		return storageURI;
+	}
+
+	public void setStorageURI(String storageURI) {
+		this.storageURI = storageURI;
 	}
 
 	public LRSQueueFile convertToNew() {
@@ -111,6 +115,7 @@ public class LRSQueueFileForm {
 		newFile.setCloudProvider(this.cloudProvider);
 		newFile.setCreationDateTime(this.creationDateTime);
 		newFile.setStorageRepoName(this.storageRepoName);
+		newFile.setStorageURI(this.storageURI);
 		newFile.setSize(this.size);
 		
 		newFile.setStatus(LRSOptionsFileStatus.READY_TO_UP.toString());

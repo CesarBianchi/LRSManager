@@ -35,7 +35,18 @@ public class LRSUpdEnginePathForm {
 	}
 
 	public String getFullAdress() {
-		return fullAdress;
+		
+		String address = new String();
+		boolean inEclipse = !(System.getenv("eclipse42") == null);
+		
+		if (inEclipse) {
+			address = "http://127.0.0.1:8081";
+		} else {
+			address = fullAdress;
+		}
+		
+		
+		return address;
 	}
 
 	public void setFullAdress(String fullAdress) {

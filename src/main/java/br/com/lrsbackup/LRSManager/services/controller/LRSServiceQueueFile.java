@@ -388,7 +388,7 @@ public class LRSServiceQueueFile {
 		return ResponseEntity.status(finalHttpStatus).body(response);		
     }
 	
-	@RequestMapping(value ="LRSManager/queue/v1/updatestatus", method = RequestMethod.POST)
+	@RequestMapping(value ="LRSManager/queue/v1/updatestatus", method = RequestMethod.PUT)
     public ResponseEntity updatestatus(HttpServletRequest request, @RequestBody LRSQueueFileForm queueForm) {
 		LRSResponseMessages messages = new LRSResponseMessages();	
 		LRSQueueFileServiceModel response = new LRSQueueFileServiceModel();
@@ -495,7 +495,7 @@ public class LRSServiceQueueFile {
 				    }
 				}
 				
-				Thread.sleep(120000);
+				Thread.sleep(10000);
 			}
 		}
 		

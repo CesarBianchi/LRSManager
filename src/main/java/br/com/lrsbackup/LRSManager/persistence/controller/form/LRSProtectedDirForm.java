@@ -13,6 +13,10 @@ public class LRSProtectedDirForm {
 		private String pathaws = new String();
 		private String pathazure = new String();
 		private String pathoracle = new String();
+		private String uri_Aws = new String();
+		private String uri_Azure = new String();
+		private String uri_Oracle = new String();
+		
 
 		public LRSProtectedDirForm() {
 			super();
@@ -20,7 +24,8 @@ public class LRSProtectedDirForm {
 		}
 
 		public LRSProtectedDirForm(String name, String description, String originalPath, String pathaws,
-				String pathazure, String pathoracle, String storageName) {
+				String pathazure, String pathoracle, String storageName,
+				String pURIAWS, String pURIAzure, String pURIOracle) {
 			this.name = name;
 			this.description = description;
 			this.originalPath = originalPath;
@@ -28,6 +33,9 @@ public class LRSProtectedDirForm {
 			this.pathazure = pathazure;
 			this.pathoracle = pathoracle;
 			this.storageRepoName = storageName;
+			this.uri_Aws = pURIAWS;
+			this.uri_Azure = pURIAzure;
+			this.uri_Oracle = pURIOracle;
 		}
 
 		public String getOriginalPath() {
@@ -85,6 +93,30 @@ public class LRSProtectedDirForm {
 		public void setStorageRepoName(String storageRepoName) {
 			this.storageRepoName = storageRepoName;
 		}
+		
+		public String getUri_Aws() {
+			return uri_Aws;
+		}
+
+		public void setUri_Aws(String uri_Aws) {
+			this.uri_Aws = uri_Aws;
+		}
+
+		public String getUri_Azure() {
+			return uri_Azure;
+		}
+
+		public void setUri_Azure(String uri_Azure) {
+			this.uri_Azure = uri_Azure;
+		}
+
+		public String getUri_Oracle() {
+			return uri_Oracle;
+		}
+
+		public void setUri_Oracle(String uri_Oracle) {
+			this.uri_Oracle = uri_Oracle;
+		}
 
 		public LRSProtectedDir convertToProtectedDir() {
 			LRSProtectedDir LRSProtDir = new LRSProtectedDir();
@@ -96,6 +128,9 @@ public class LRSProtectedDirForm {
 			LRSProtDir.setDestinationPath_Azure(this.pathazure.trim());
 			LRSProtDir.setDestinationPath_Oracle(this.pathoracle.trim());
 			LRSProtDir.setStorageRepositoryName(this.storageRepoName.trim());
+			LRSProtDir.setURIPath_AWS(this.uri_Aws);
+			LRSProtDir.setURIPath_Azure(this.uri_Azure);
+			LRSProtDir.setURIPath_Oracle(this.uri_Oracle);
 			LRSProtDir.setCreatedDate(LocalDateTime.now());
 			
 			return LRSProtDir;

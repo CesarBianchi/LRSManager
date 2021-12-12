@@ -22,6 +22,7 @@ public class LRSQueueFile {
 	private String destinationFileName = new String();
 	private String cloudProvider = new String();
 	private String storageRepoName = new String();
+	private String storageURI = new String();
 	private String status;
 	private int percentUploaded;
 	private int tentatives;
@@ -137,6 +138,14 @@ public class LRSQueueFile {
 
 	public void setStorageRepoName(String storageRepoName) {
 		this.storageRepoName = storageRepoName;
+	}
+
+	public String getStorageURI() {
+		return storageURI;
+	}
+
+	public void setStorageURI(String storageURI) {
+		this.storageURI = storageURI;
 	}
 	
 	

@@ -8,10 +8,10 @@ You can find a main class to run this program in **/src/br/com/lrsbackup/LRSMana
 Important Notice: All codes were write using Eclipse IDE using a "Maven Project"
 
 ## Authors
-- [Cesar Bianchi](https://www.linkedin.com/in/cesar-bianchi-9b90571b/), since 2018.
+- [Cesar Bianchi](https://www.linkedin.com/in/cesar-bianchi-9b90571b/), since 2021.
 
 ## License
- This software is licensed under [GNU 2.0](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)   
+ This software is licensed under [GPL-3.0 License](https://www.gnu.org/licenses/gpl-3.0.pt-br.html)   
 
 ## More Info
  Please visit http://www.lrsbackup.com (under construction) or write to me: cesar_bianchi@hotmail.com

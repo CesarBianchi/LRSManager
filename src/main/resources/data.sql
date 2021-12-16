@@ -9,6 +9,6 @@ INSERT INTO lrsparameter (id,name,value) VALUES (8,'KeyCloudAzure','TBD');
 INSERT INTO lrsparameter (id,name,value) VALUES (9,'KeyCloudOracle','TBD');
 INSERT INTO lrsparameter (id,name,value) VALUES (10,'TimetoWaitToUpload','48');
 INSERT INTO lrsparameter (id,name,value) VALUES (11,'ScheduledStartTime','23:00:00');
-INSERT INTO lrsparameter (id,name,value) VALUES (11,'RenameIrregularDirNames','False');
 INSERT INTO lrsparameter (id,name,value) VALUES (12,'ServicePath_LRSUploadEngine','http://127.0.0.1');
-INSERT INTO lrsparameter (id,name,value) VALUES (13,'ServicePort_LRSUploadEngine','8080');  
+INSERT INTO lrsparameter (id,name,value) VALUES (13,'ServicePort_LRSUploadEngine','6003');  
+INSERT INTO lrsparameter (id,name,value) VALUES (14,'RenameIrregularDirNames','False');

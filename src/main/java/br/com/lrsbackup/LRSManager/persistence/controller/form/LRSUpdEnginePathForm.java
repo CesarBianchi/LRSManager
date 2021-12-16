@@ -40,7 +40,7 @@ public class LRSUpdEnginePathForm {
 		boolean inEclipse = !(System.getenv("eclipse42") == null);
 		
 		if (inEclipse) {
-			address = "http://127.0.0.1:8081";
+			address = "http://127.0.0.1:6003";
 		} else {
 			address = fullAdress;
 		}

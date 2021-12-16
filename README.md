@@ -5,7 +5,9 @@ LRSManager is a part of LRSBackup Solution, responsible to persist data in a MyS
 ## Getting Started (for developers)
 All code about LRSManager are available in **/src** directory and all libraries dependency are available in pom.xml file.
 You can find a main class to run this program in **/src/br/com/lrsbackup/LRSManager/LRSManagerApplication.java**
-Important Notice: All codes were write using Eclipse IDE using a "Maven Project"
+
+Important Notice: This project is under development, almost done. So, there are some bugs yet, i'm working over it. All codes were write using Eclipse IDE using a "Maven Project"
+
 
 ## Getting Started (for end-users)
 To run LRSManager, look at the binary file (executable file) about LRSManager. 

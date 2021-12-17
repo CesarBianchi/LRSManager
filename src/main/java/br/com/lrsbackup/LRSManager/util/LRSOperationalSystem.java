@@ -86,7 +86,7 @@ public class LRSOperationalSystem {
 		String delimiter = new String();
 		
 		if (this.isWindows()) {
-			delimiter = "\\";
+			delimiter = "\\\\";
 		} else {
 			delimiter = "/";
 		}

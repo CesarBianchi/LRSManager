@@ -32,11 +32,12 @@ We strongly recommend that you use a Docker container to run LRSManager. In this
 By the way, the LRSManager runs over 6001 HTTP Port, but we strongly recommend to you add any API Gateway between LRSManager and all others parts of LRSBackup Application, like "KrakenD API Gateway"
 
 To run LRSManager through Docker Engine/Container, please use the example command (The LRSManager.Dockerfile are inside the git repo):
-
+```
 $ docker build -tlrsmanager lrsmanager -f LRSManager.Dockerfile 
-
+```
+```
 $ docker run -d -p 6001:6001 -v /<your_local_source_files>/:/your_container_source_files/ --env LRSManager_DBIP=<your_mysql_IP> --env LRSManager_DBPORT=<your_mysql_port> --env LRSManager_DBNAME=<your_mysql_db_name> --env LRSManager_DBUSER=<your_mysql_db_user> --env LRSManager_DBPSW=<your_mysql_db_password> --restart unless-stopped lrsmanager
-
+```
 
 ## Authors
 - [Cesar Bianchi](https://www.linkedin.com/in/cesar-bianchi-9b90571b/), since 2021.

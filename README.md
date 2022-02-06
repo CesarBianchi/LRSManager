@@ -15,18 +15,23 @@ PS: Note all details above, about "Environment Variables". You will need configu
 First, you will need a empty database inside an MySQL Instance (you can use any kind of MySQL Instance, like MySQL PaaS Services in AWS or Azure, for example, or OnPremisses also.)
 
 Then, you will need configure some "Environment Variables" in your host that will run LRSManager (docker containers requires the same variables).
-
 The environment variables are:
 
+```
 Name: LRSManager_DBIP   - Value: <The IP address about your MySQL Instance, or DNS endpoint path>.
-
+```
+```
 Name: LRSManager_DBPORT - Value: <The port where your MySql Instance is running>
-
+```
+```
 Name: LRSManager_DBNAME - Value: <The name of your MySQL Database, dedicated to LRSManager> 
-
+```
+```
 Name: LRSManager_DBUSER - Value: <The username of your MySQL Database instance, with grants to access the LRSDatabase>
-
+```
+```
 Name: LRSManager_DBPSW  - Value: <The Password of your MySQL Database instance> 
+```
 
 To run LRSManager, look at the binary file (executable file) about LRSManager, called LRSManager.jar 
 After download it, plese run the following commands in your command line application (Terminal to MacOs/Linux users or CMD to Windows Users)

@@ -8,6 +8,8 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import br.com.lrsbackup.LRSManager.util.LRSDatabaseCredentials;
+
 
 @SpringBootApplication
 public class LRSManagerApplication {
@@ -19,13 +21,16 @@ public class LRSManagerApplication {
 
 	@Configuration
 	public class DatasourceConfig {
-	    @Bean
+	    		
+		LRSDatabaseCredentials dbCredentials = new LRSDatabaseCredentials();
+		
+		@Bean
 	    public DataSource datasource() {
 	        return DataSourceBuilder.create()
 	          .driverClassName("com.mysql.cj.jdbc.Driver")
-	          .url("jdbc:mysql://192.168.0.101:3306/LRSBackup")
-	          .username("cesar_bianchi")
-	          .password("notSafe@IKnow2butILazyToday")
+	          .url("jdbc:mysql://".concat(dbCredentials.getIp()).concat(":").concat(dbCredentials.getPort()).concat("/").concat(dbCredentials.getDbName()))
+	          .username(dbCredentials.getUsername())
+	          .password(dbCredentials.getPassword())
 	          .build();	
 	    }
 	}

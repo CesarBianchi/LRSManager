@@ -13,10 +13,12 @@
   
   <properties>
 		<java.version>8</java.version>
+		<!--
 		<opentracing.spring.web.version>0.3.4</opentracing.spring.web.version>
 		<opentracing.jdbc.version>0.0.12</opentracing.jdbc.version>
  		<opentracing.spring.configuration.starter.version>0.1.0</opentracing.spring.configuration.starter.version>
 	 	<opentracing.spring.jaeger.starter.version>0.2.2</opentracing.spring.jaeger.starter.version>
+	 	-->
 	</properties>
 	
 	<dependencies>
@@ -80,6 +82,14 @@
 		    <artifactId>hibernate-entitymanager</artifactId>
 		</dependency>
 		
+		
+		<dependency>
+			<groupId>io.opentracing.contrib</groupId>
+			<artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>
+			<version>3.1.2</version>
+		</dependency>
+		
+		<!--
 		<dependency>
 		    <groupId>io.opentracing.contrib</groupId>
 		    <artifactId>opentracing-spring-web-starter</artifactId>
@@ -100,7 +110,7 @@
 		    <artifactId>opentracing-spring-jaeger-starter</artifactId>
 		    <version>${opentracing.spring.jaeger.starter.version}</version>
 		</dependency>
-		
+		-->
 	</dependencies>
 
 	<build>

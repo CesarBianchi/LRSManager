@@ -20,7 +20,7 @@ public class LRSJaegerConfiguration implements ApplicationListener<ContextRefres
 	private static final int JAEGER_PORT = 6831;
     private static final String JAEGER_HOST = "192.168.0.101";
     private static final String JAEGER_SERVICE_NAME = "LRSBackup";
-    private static final double SAMPLING_RATE = 0.5;
+    private static final double SAMPLING_RATE = 1;
     @Autowired
     private Tracer tracer;
 
@@ -50,3 +50,5 @@ public class LRSJaegerConfiguration implements ApplicationListener<ContextRefres
         }
     }
 }
+
+

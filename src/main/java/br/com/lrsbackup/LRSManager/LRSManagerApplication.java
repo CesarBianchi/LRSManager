@@ -47,19 +47,7 @@ public class LRSManagerApplication {
 	          .password(dbCredentials.getPassword())
 	          .build();	
 	    }
-		/*
-		@Configuration
-		public class JaegerFilterConfiguration {
 
-		    @Bean
-		    public TracingFilter tracingFilter(Tracer tracer) {
-		        return new TracingFilter(tracer);
-		    }
-		}
-		*/
-		
-		
-		
 		
 	}
 	

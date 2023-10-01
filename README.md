@@ -1,5 +1,7 @@
 # LRSManager
 
+## This project has reached its end of life, and is now just preserved here for posterity.
+
 LRSManager is a part of LRSBackup Solution, responsible to persist data in a MySql DBase and offer a lot of services with capabilities to manager the main functions about LRSBackup, like "protected directories", "queue files to upload in public cloud", parameters data, like "users and keys" and others.
 
 ## Getting Started (for developers)
